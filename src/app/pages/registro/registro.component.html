@@ -1,0 +1,43 @@
+<form [formGroup]="registroForm" (ngSubmit)="register()">
+  <div>
+    <label for="nome">Nome:</label>
+    <input id="nome" formControlName="nome" required>
+  </div>
+
+  <div>
+    <label for="email">Email:</label>
+    <input id="email" formControlName="email" type="email" required>
+  </div>
+
+  <div>
+    <label for="cep">CEP:</label>
+    <input id="cep" formControlName="cep" (blur)="onCepChange()" (input)="onCepChange()">
+  </div>
+
+  <div>
+    <label for="logradouro">Rua:</label>
+    <input id="logradouro" formControlName="rua" readonly>
+  </div>
+
+  <div>
+    <label for="bairro">Bairro:</label>
+    <input id="bairro" formControlName="bairro" readonly>
+  </div>
+
+  <div>
+    <label for="localidade">Cidade:</label>
+    <input id="localidade" formControlName="cidade" readonly>
+  </div>
+
+  <div>
+    <label for="uf">Estado:</label>
+    <input id="uf" formControlName="estado" readonly>
+  </div>
+
+  <div>
+    <label for="senha">Senha:</label>
+    <input id="senha" formControlName="senha" type="password" required>
+  </div>
+
+  <button type="submit">Registrar</button>
+</form>

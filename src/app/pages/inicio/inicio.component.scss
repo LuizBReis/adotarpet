@@ -1,0 +1,43 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Ajuste para a altura total da tela */
+  }
+  
+  app-header {
+    flex: 0 0 80px; /* Ajuste a altura do cabeçalho */
+    background-color: #f8f9fa;
+  }
+  
+  .app-sidenav {
+    flex: 0 0 250px; /* Largura fixa para a sidebar */
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    position: fixed; /* Fixa a sidebar no lado esquerdo */
+    top: 80px; /* Ajuste conforme a altura do cabeçalho */
+    bottom: 0;
+    overflow-y: auto;
+  }
+  
+  .content {
+    margin-left: 250px; /* Ajusta o conteúdo para não ficar sobre a sidebar */
+    padding: 20px;
+    background-color: #f0f0f0;
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  @media (max-width: 768px) {
+    .app-sidenav {
+      width: 100%;
+      height: auto;
+      position: relative; /* Remove a posição fixa em telas menores */
+      top: 0;
+    }
+  
+    .content {
+      margin-left: 0;
+    }
+  }
+  

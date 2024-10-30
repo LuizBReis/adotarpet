@@ -1,0 +1,122 @@
+.pet-card {
+    max-width: 400px;
+    margin: 20px auto; /* Margem vertical para espaçamento */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
+  }
+  
+  .pet-header {
+    text-align: center;
+    margin-bottom: 20px; /* Espaçamento inferior */
+  }
+  
+  .pet-title {
+    font-size: 28px; /* Aumentei o tamanho da fonte */
+    color: #333; /* Cor de texto mais escura */
+  }
+  
+  .pet-content {
+    display: flex;
+    align-items: center;
+  }
+  
+  .pet-image {
+    flex: 1;
+    text-align: center;
+  
+    img {
+      width: 120px; /* Reduzi um pouco para não ocupar muito espaço */
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ddd; /* Adicionei uma borda ao redor da imagem */
+    }
+  }
+  
+  .pet-details {
+    flex: 2; /* Alterei para dar um pouco mais de espaço para os detalhes */
+    padding-left: 20px;
+  
+    h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #444; /* Cor de texto um pouco mais escura */
+    }
+  
+    p {
+      font-size: 16px;
+      margin: 5px 0;
+      color: #666; /* Cor de texto mais clara para informações */
+    }
+  
+    input {
+      width: 100%; /* Inputs ocupam 100% da largura disponível */
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px; /* Bordas arredondadas para inputs */
+      box-sizing: border-box; /* Para incluir padding e border no cálculo do tamanho */
+    }
+  }
+  
+  .mat-card-actions {
+    display: flex;
+    flex-direction: column; /* Mudar a direção para coluna */
+    align-items: center; /* Centralizar itens horizontalmente */
+    margin-top: 20px;
+    gap: 10px; /* Espaçamento entre os botões */
+    position: relative; /* Para posicionar o ícone */
+  }
+  
+  .icon-button {
+    cursor: pointer;
+    position: absolute; /* Para posicionar o ícone no canto */
+    top: 10px; /* Ajuste a posição conforme necessário */
+    right: 10px; /* Ajuste a posição conforme necessário */
+  }
+  
+  button {
+    min-width: 120px; /* Garantir que os botões tenham largura mínima */
+    font-weight: bold; /* Tornar o texto do botão mais audacioso */
+    transition: background-color 0.3s, color 0.3s; /* Efeito de transição suave */
+  }
+  
+  /* Estilo para botões */
+  button.mat-raised-button {
+    background-color: #007bff; /* Azul padrão */
+    color: #ffffff; /* Texto branco */
+  
+    /* Efeitos de hover */
+    &:hover {
+      background-color: #0056b3; /* Azul escuro ao passar o mouse */
+    }
+  }
+  
+  button.mat-raised-button[color="primary"] {
+    background-color: #28a745; /* Verde para botões primários */
+    color: #ffffff;
+  
+    &:hover {
+      background-color: #218838; /* Verde escuro ao passar o mouse */
+    }
+  }
+  
+  button.mat-raised-button[color="warn"] {
+    background-color: #dc3545; /* Vermelho para botões de alerta */
+    color: #ffffff;
+  
+    &:hover {
+      background-color: #c82333; /* Vermelho escuro ao passar o mouse */
+    }
+  }
+  
+  button.mat-raised-button[color="accent"] {
+    background-color: #17a2b8; /* Ciano para botões de ação */
+    color: #ffffff;
+  
+    &:hover {
+      background-color: #138496; /* Ciano escuro ao passar o mouse */
+    }
+  }
+  

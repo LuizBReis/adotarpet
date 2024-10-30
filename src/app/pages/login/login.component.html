@@ -1,0 +1,26 @@
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+  <div>
+    <label for="email">Email:</label>
+    <input id="email" formControlName="email" type="email" required>
+    <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+      <small>Email inválido.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="senha">Senha:</label>
+    <input id="senha" formControlName="senha" type="password" required>
+    <div *ngIf="loginForm.get('senha')?.invalid && loginForm.get('senha')?.touched">
+      <small>Senha é obrigatória.</small>
+    </div>
+  </div>
+
+  <button type="submit">Login</button>
+
+  <!-- Exibir mensagem de erro -->
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <a href="/registro" class="register-link">Registrar</a>
+</form>

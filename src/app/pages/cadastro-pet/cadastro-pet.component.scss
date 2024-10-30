@@ -1,0 +1,97 @@
+.cadastro-pet-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.cadastro-pet-container:hover {
+  transform: translateY(-2px);
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+div {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, select:focus {
+  border-color: #6e1616;
+  box-shadow: 0 0 5px rgba(59, 0, 0, 0.5);
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.cancel-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #f44336; /* Vermelho */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #e53935; /* Vermelho escuro */
+  transform: translateY(-2px);
+}
+
+
+button:hover:not(:disabled) {
+  background-color: #4a6374;
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #d9534f; /* Vermelho */
+  font-size: 14px;
+  margin-top: 5px;
+}

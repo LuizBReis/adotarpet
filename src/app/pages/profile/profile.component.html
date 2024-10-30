@@ -1,0 +1,57 @@
+<mat-card class="profile-card custom-card">
+  <mat-card-header>
+    <div class="profile-header">
+      <h1 class="profile-title">Dono Profile</h1>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="profile-content">
+      <div class="profile-image">
+        <img src="https://via.placeholder.com/150" alt="Profile Image">
+      </div>
+      <div class="profile-details">
+        <h2>Nome: {{ dono.nome }}</h2>
+        <ng-container *ngIf="isEditMode; else displayMode">
+          <p>
+            Email: <input [(ngModel)]="dono.email" />
+          </p>
+          <p>
+            Rua: <input [(ngModel)]="dono.rua" />
+          </p>
+          <p>
+            Cidade: <input [(ngModel)]="dono.cidade" /> Estado: <input [(ngModel)]="dono.estado" />
+          </p>
+          <p>
+            CEP: <input [(ngModel)]="dono.cep" />
+          </p>
+        </ng-container>
+        <ng-template #displayMode>
+          <p>Email: {{ dono.email }}</p>
+          <p>Rua: {{ dono.rua }}</p>
+          <p>Cidade/Estado: {{ dono.cidade }}, {{ dono.estado }}</p>
+          <p>CEP: {{ dono.cep }}</p>
+        </ng-template>
+
+        <button mat-raised-button color="accent" (click)="toggleEditMode()">
+          {{ isEditMode ? 'Cancelar' : 'Editar' }}
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <ng-container *ngIf="isEditMode">
+      <button mat-raised-button color="primary" (click)="saveChanges()">Salvar</button>
+      <!-- O botão "Cancelar" é gerado pelo botão de alternância -->
+    </ng-container>
+
+    <!-- Ícone de lixeira como um link -->
+    <div class="icon-button">
+      <a (click)="deleteAccount()" routerLinkActive="active">
+        <span class="menu-icon material-icons">delete</span>
+      </a>
+    </div>     
+
+    <!-- Botão de Voltar -->
+    <button mat-raised-button color="primary" (click)="router.navigate(['/inicio'])">Voltar</button>
+  </mat-card-actions>
+</mat-card>
