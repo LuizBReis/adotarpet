@@ -11,8 +11,8 @@ interface Pet {
   raca: string;
   porte: string;
   castrado: boolean;
-  paraAdocao: boolean; // Novo campo para adoção
-  donoId: number; // Relacionamento com o Dono
+  paraAdocao: boolean;
+  donoId: number;
 }
 
 @Injectable({
@@ -28,9 +28,9 @@ export class PetService {
     return this.http.post(`${this.apiUrl}`, petData); // Faz a requisição POST com os dados do pet
   }
 
-  // Método para obter os dados de um pet pelo ID
-  getPet(id: number): Observable<Pet> {
-    return this.http.get<Pet>(`${this.apiUrl}/${id}`); // Faz a requisição GET para obter os dados do pet
+  // Método para obter os dados de um pet pelo ID (incluindo o telefone do dono)
+  getPet(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`); // Faz a requisição GET para obter os dados do pet, incluindo telefone do dono
   }
 
   // Método para atualizar os dados de um pet pelo ID
@@ -44,10 +44,9 @@ export class PetService {
   }
 
   // Método para obter todos os pets de um dono específico
-// pet.service.ts
   getPetsByDono(donoId: number): Observable<Pet[]> {
     return this.http.get<Pet[]>(`${this.apiUrl}/dono/${donoId}`); // Alterado para a URL correta
-}
+  }
 
   // Método para obter todos os pets disponíveis para adoção
   getPetsParaAdocao(): Observable<Pet[]> {

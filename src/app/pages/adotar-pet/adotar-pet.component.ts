@@ -14,6 +14,7 @@ interface Pet {
   castrado: boolean;
   paraAdocao: boolean;
   donoId: number;
+  telefoneDono?: string; // Incluímos o telefone do dono
 }
 
 @Component({
@@ -47,10 +48,11 @@ export class AdotarPetComponent implements OnInit {
     );
   }
 
-  confirmarAdocao(pet: Pet) {
-    const confirmacao = window.confirm(`Tem certeza que deseja adotar o pet ${pet.nome}?`);
-    if (confirmacao) {
-      alert(`Parabéns pela adoção de ${pet.nome}!`);
-    }
+  abrirWhatsapp(pet: Pet) {
+    const telefoneDono = pet.telefoneDono || ''; // Certifique-se de que o telefone está presente
+    const mensagem = `Olá! Tenho interesse em adotar o ${pet.nome}. Ainda está disponível?`;
+    const urlWhatsapp = `https://wa.me/${telefoneDono}?text=${encodeURIComponent(mensagem)}`;
+
+    window.open(urlWhatsapp, '_blank');
   }
 }

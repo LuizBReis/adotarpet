@@ -15,6 +15,7 @@ const Pet = sequelize.define('Pet', {
   raca: DataTypes.STRING,
   idade: DataTypes.INTEGER,
   porte: DataTypes.STRING,
+  tipo: DataTypes.STRING,
   castrado: {
     type: DataTypes.BOOLEAN,
     allowNull: true,

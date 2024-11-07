@@ -25,7 +25,8 @@ export class RegistroComponent {
     this.registroForm = this.fb.group({
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      senha: ['', [Validators.required]],
+      senha: ['', Validators.required],
+      telefone: ['', [Validators.required, Validators.pattern(/^\d{2}\d{4,5}\d{4}$/)]], // Validação para telefone
       cep: [''],
       rua: [''],
       bairro: [''],

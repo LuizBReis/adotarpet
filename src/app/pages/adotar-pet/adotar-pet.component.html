@@ -1,19 +1,18 @@
 <div class="adotar-pet-container">
-    <div *ngIf="petsParaAdocao.length > 0; else emptyList" class="pet-list">
-      <div *ngFor="let pet of petsParaAdocao" class="pet-card">
-        <div class="pet-info">
-          <h3>{{ pet.nome }}</h3>
-          <p><strong>Idade:</strong> {{ pet.idade }} anos</p>
-          <p><strong>Tipo:</strong> {{ pet.tipo }}</p>
-          <p><strong>Raça:</strong> {{ pet.raca }}</p>
-          <p><strong>Porte:</strong> {{ pet.porte }}</p>
-          <p><strong>Castrado:</strong> {{ pet.castrado ? 'Sim' : 'Não' }}</p>
-        </div>
-        <button class="adotar-btn">Tenho Interesse!</button>
+  <div *ngIf="petsParaAdocao.length > 0; else emptyList" class="pet-list">
+    <div *ngFor="let pet of petsParaAdocao" class="pet-card">
+      <div class="pet-info">
+        <h3>{{ pet.nome }}</h3>
+        <p><strong>Idade:</strong> {{ pet.idade }} anos</p>
+        <p><strong>Tipo:</strong> {{ pet.tipo }}</p>
+        <p><strong>Raça:</strong> {{ pet.raca }}</p>
+        <p><strong>Porte:</strong> {{ pet.porte }}</p>
+        <p><strong>Castrado:</strong> {{ pet.castrado ? 'Sim' : 'Não' }}</p>
       </div>
+      <button class="adotar-btn" (click)="abrirWhatsapp(pet)">Tenho Interesse!</button>
     </div>
-    <ng-template #emptyList>
-      <p>Não há pets disponíveis para adoção no momento.</p>
-    </ng-template>
   </div>
-  
+  <ng-template #emptyList>
+    <p>Não há pets disponíveis para adoção no momento.</p>
+  </ng-template>
+</div>

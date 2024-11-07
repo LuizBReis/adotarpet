@@ -22,6 +22,16 @@ const Dono = sequelize.define('Dono', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  telefone: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      is: /^\d{2}\d{4,5}\d{4}$/, // Validação para aceitar apenas números brasileiros
+      len: [10, 11], // Número deve ter entre 10 e 11 dígitos
+    },
+  },
+  
   rua: DataTypes.STRING,
   cidade: DataTypes.STRING,
   estado: DataTypes.STRING,

@@ -10,6 +10,14 @@
   </div>
 
   <div>
+    <label for="telefone">Telefone:</label>
+    <input id="telefone" formControlName="telefone" type="text" required>
+    <div *ngIf="registroForm.get('telefone')?.invalid && registroForm.get('telefone')?.touched">
+      <small>Formato inválido. Exemplo: DDD + Número (11987654321).</small>
+    </div>
+  </div>
+
+  <div>
     <label for="cep">CEP:</label>
     <input id="cep" formControlName="cep" (blur)="onCepChange()" (input)="onCepChange()">
   </div>
@@ -39,5 +47,5 @@
     <input id="senha" formControlName="senha" type="password" required>
   </div>
 
-  <button type="submit">Registrar</button>
+  <button type="submit" [disabled]="registroForm.invalid">Registrar</button>
 </form>
