@@ -3,7 +3,11 @@
   <div *ngIf="petsParaAdocao.length > 0; else emptyList" class="pet-list">
     <div *ngFor="let pet of petsParaAdocao" class="pet-card">
       <div class="pet-info">
-        <img [src]="pet.imagem ? 'http://localhost:3000/' + pet.imagem : 'caminho_default.jpg'" alt="Imagem do Pet" />
+        <div class="pet-info">
+          <button *ngIf="pet.imagens && pet.imagens.length > 0 && pet.imagemAtual! > 0" (click)="anteriorImagem(pet)">◀</button>
+          <img *ngIf="pet.imagens && pet.imagens.length > 0 && pet.imagemAtual !== undefined" [src]="'http://localhost:3000/' + pet.imagens[pet.imagemAtual!]" alt="Imagem do Pet" />
+          <button *ngIf="pet.imagens && pet.imagens.length > 0 && pet.imagemAtual! < pet.imagens.length - 1" (click)="proximaImagem(pet)">▶</button>
+        </div>        
         <h3>{{ pet.nome }}</h3>
         <p><strong>Idade:</strong> {{ pet.idade }} anos</p>
         <p><strong>Tipo:</strong> {{ pet.tipo }}</p>

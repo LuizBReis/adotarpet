@@ -1,72 +1,81 @@
 <mat-card class="pet-card custom-card">
-  <mat-card-header>
+    <mat-card-header>
       <div class="pet-header">
-          <h1 class="pet-title">Editar Pet</h1>
+        <h1 class="pet-title">Editar Pet</h1>
       </div>
-  </mat-card-header>
+    </mat-card-header>
   
-  <mat-card-content>
+    <mat-card-content>
       <div class="pet-content">
-          <div class="pet-image">
-              <img src="https://via.placeholder.com/150" alt="Imagem do Pet">
+        <div class="pet-image">
+          <!-- Exibir imagens do pet -->
+          <div *ngIf="pet.imagens && pet.imagens.length > 0">
+            <div *ngFor="let image of pet.imagens; let i = index">
+              <img [src]="'http://localhost:3000/' + image" alt="Imagem do Pet" />
+              <button (click)="removeImage(i)">Remover</button>
+            </div>
           </div>
           
-          <div class="pet-details">
-              <!-- Exibir campos editáveis no modo de edição -->
-              <ng-container *ngIf="isEditMode; else displayMode">
-                  <p>
-                      Nome: <input [(ngModel)]="pet.nome" placeholder="Nome do Pet" />
-                  </p>
-                  <p>
-                      Idade: <input [(ngModel)]="pet.idade" type="number" placeholder="Idade" />
-                  </p>
-                  <p>
-                      Tipo: <input [(ngModel)]="pet.tipo" placeholder="Tipo do Pet (Ex: Cachorro, Gato)" />
-                  </p>
-                  <p>
-                      Raça: <input [(ngModel)]="pet.raca" placeholder="Raça do Pet" />
-                  </p>
-                  <p>
-                      Porte: <input [(ngModel)]="pet.porte" placeholder="Porte (Ex: Pequeno, Médio, Grande)" />
-                  </p>
-                  <p>
-                      Castrado: 
-                      <mat-checkbox [(ngModel)]="pet.castrado">Sim</mat-checkbox>
-                  </p>
-              </ng-container>
-              
-              <!-- Exibir os campos não editáveis no modo de exibição -->
-              <ng-template #displayMode>
-                  <p>Nome: {{ pet.nome }}</p>
-                  <p>Idade: {{ pet.idade }} anos</p>
-                  <p>Tipo: {{ pet.tipo }}</p>
-                  <p>Raça: {{ pet.raca }}</p>
-                  <p>Porte: {{ pet.porte }}</p>
-                  <p>Castrado: {{ pet.castrado ? 'Sim' : 'Não' }}</p>
-              </ng-template>
-              
-              <!-- Botão de alternância entre Modo de Edição e Exibição -->
-              <button mat-raised-button color="accent" (click)="toggleEditMode()">
-                  {{ isEditMode ? 'Cancelar' : 'Editar' }}
-              </button>
-          </div>
-      </div>
-  </mat-card-content>
+          <input type="file" (change)="onImageChange($event)" />
+          
+          
+          <!-- Adicionar nova imagem -->
+          <input *ngIf="isEditMode" type="file" (change)="onImageChange($event)">
+        </div>
   
-  <mat-card-actions>
-      <!-- Exibir os botões Salvar e Cancelar no modo de edição -->
+        <div class="pet-details">
+          <ng-container *ngIf="isEditMode; else displayMode">
+            <!-- Campos editáveis -->
+            <p>
+              Nome: <input [(ngModel)]="pet.nome" placeholder="Nome do Pet" />
+            </p>
+            <p>
+              Idade: <input [(ngModel)]="pet.idade" type="number" placeholder="Idade" />
+            </p>
+            <p>
+              Tipo: <input [(ngModel)]="pet.tipo" placeholder="Tipo do Pet" />
+            </p>
+            <p>
+              Raça: <input [(ngModel)]="pet.raca" placeholder="Raça do Pet" />
+            </p>
+            <p>
+              Porte: <input [(ngModel)]="pet.porte" placeholder="Porte" />
+            </p>
+            <p>
+              Castrado:
+              <mat-checkbox [(ngModel)]="pet.castrado">Sim</mat-checkbox>
+            </p>
+          </ng-container>
+  
+          <ng-template #displayMode>
+            <!-- Campos de exibição -->
+            <p>Nome: {{ pet.nome }}</p>
+            <p>Idade: {{ pet.idade }} anos</p>
+            <p>Tipo: {{ pet.tipo }}</p>
+            <p>Raça: {{ pet.raca }}</p>
+            <p>Porte: {{ pet.porte }}</p>
+            <p>Castrado: {{ pet.castrado ? 'Sim' : 'Não' }}</p>
+          </ng-template>
+  
+          <button mat-raised-button color="accent" (click)="toggleEditMode()">
+            {{ isEditMode ? 'Cancelar' : 'Editar' }}
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  
+    <mat-card-actions>
       <ng-container *ngIf="isEditMode">
-          <button mat-raised-button color="primary" (click)="saveChanges()">Salvar</button>
-          <!-- Remover o botão Cancelar duplicado aqui -->
+        <button mat-raised-button color="primary" (click)="saveChanges()">Salvar</button>
       </ng-container>
-
-      <!-- Botão de excluir pet -->
+  
       <div class="icon-button">
-          <a (click)="deletePet()" routerLinkActive="active">
-              <span class="menu-icon material-icons">delete</span>
-          </a>
-      </div>     
-
+        <a (click)="deletePet()" routerLinkActive="active">
+          <span class="menu-icon material-icons">delete</span>
+        </a>
+      </div>
+  
       <button mat-raised-button color="primary" (click)="router.navigate(['/inicio'])">Voltar</button>
-  </mat-card-actions>
-</mat-card>
+    </mat-card-actions>
+  </mat-card>
+  

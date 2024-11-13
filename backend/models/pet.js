@@ -32,10 +32,11 @@ const Pet = sequelize.define('Pet', {
     },
     allowNull: false,
   },
-  imagem: {  // Novo campo
-    type: DataTypes.STRING,  // Caminho da imagem
+  imagens: {  // Alterado para um array de strings
+    type: DataTypes.JSONB,  // Usando JSONB para armazenar um array de strings
     allowNull: true,
   }
+  
 });
 
 // Definindo a relação entre Pet e Dono com onDelete: 'CASCADE'

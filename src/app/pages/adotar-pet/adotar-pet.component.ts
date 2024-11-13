@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 
-
 interface Pet {
   id: number;
   nome: string;
@@ -15,8 +14,9 @@ interface Pet {
   castrado: boolean;
   paraAdocao: boolean;
   donoId: number;
-  telefoneDono?: string; // Incluímos o telefone do dono
-  imagem?: string;
+  telefoneDono?: string;
+  imagens?: string[];
+  imagemAtual?: number;
 }
 
 @Component({
@@ -43,12 +43,31 @@ export class AdotarPetComponent implements OnInit {
     this.petService.getPetsParaAdocao().subscribe(
       (pets) => {
         this.petsParaAdocao = pets.filter((pet) => pet.paraAdocao);
+        // Inicializa imagemAtual para cada pet, com verificação
+        this.petsParaAdocao.forEach(pet => {
+          pet.imagemAtual = pet.imagemAtual ?? 0;  // Definindo imagemAtual como 0 se undefined
+          pet.imagens = pet.imagens || [];  // Garantindo que 'imagens' seja um array, mesmo vazio
+        });
       },
       (error) => {
         console.error('Erro ao carregar pets para adoção', error);
       }
     );
   }
+  
+
+  anteriorImagem(pet: Pet) {
+    if (pet.imagens && pet.imagemAtual !== undefined && pet.imagemAtual > 0) {
+      pet.imagemAtual--;
+    }
+  }
+  
+  proximaImagem(pet: Pet) {
+    if (pet.imagens && pet.imagemAtual !== undefined && pet.imagemAtual < pet.imagens.length - 1) {
+      pet.imagemAtual++;
+    }
+  }
+  
 
   abrirWhatsapp(pet: Pet) {
     const telefoneDono = pet.telefoneDono || ''; // Certifique-se de que o telefone está presente

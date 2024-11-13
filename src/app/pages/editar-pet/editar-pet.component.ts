@@ -5,19 +5,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router'; // Import necessário para obter o ID pela rota
+import { ActivatedRoute, Router } from '@angular/router';
 
-// Atualizando a interface Pet para incluir 'paraAdocao'
 interface Pet {
-  id: number; // O ID pode ser opcional na interface Pet
+  id: number;
   nome: string;
   idade: number;
   tipo: string;
   raca: string;
   porte: string;
   castrado: boolean;
-  donoId: number; // Agora incluímos o donoId
-  paraAdocao: boolean; // Adicionando o campo para adoção
+  donoId: number;
+  paraAdocao: boolean;
+  imagens: string[];
 }
 
 @Component({
@@ -36,27 +36,26 @@ export class EditarPetComponent implements OnInit {
     raca: '',
     porte: '',
     castrado: false,
-    donoId: 0, // Inicialize donoId com 0 ou outro valor padrão
-    paraAdocao: false // Inicialize paraAdocao com false
+    donoId: 0,
+    paraAdocao: false,
+    imagens: [] // Corrigido com a vírgula
   };
   isEditMode = false;
   petId: number | null = null;
 
   constructor(
-    private petService: PetService, 
+    private petService: PetService,
     private accesoService: AccesoService,
-    private route: ActivatedRoute, // Para acessar parâmetros da rota
-    public router: Router // Para redirecionar após exclusão
+    private route: ActivatedRoute,
+    public router: Router
   ) {}
 
   ngOnInit() {
-    // Obter o petId da rota atual
-    this.petId = Number(this.route.snapshot.paramMap.get('id')); 
-
+    this.petId = Number(this.route.snapshot.paramMap.get('id'));
     if (this.petId) {
       this.loadPetData();
     } else {
-      console.error('ID do Pet é null. Certifique-se de que o pet esteja selecionado.');
+      console.error('ID do Pet é null.');
     }
   }
 
@@ -96,27 +95,38 @@ export class EditarPetComponent implements OnInit {
 
   cancelEdit() {
     this.toggleEditMode();
-    this.loadPetData(); // Recarregar dados do servidor
+    this.loadPetData();
   }
 
   deletePet() {
     if (this.petId !== null) {
-      const confirmDelete = confirm('Tem certeza de que deseja excluir este pet? Esta ação não pode ser desfeita.');
-
+      const confirmDelete = confirm('Tem certeza de que deseja excluir este pet?');
       if (confirmDelete) {
         this.petService.deletePet(this.petId).subscribe(
           () => {
             console.log('Pet excluído com sucesso.');
-            this.router.navigate(['/inicio']); // Redirecionar para a lista de pets ou outra página
+            this.router.navigate(['/inicio']);
           },
           (error) => {
             console.error('Erro ao excluir o pet:', error);
-            if (error.error) {
-              console.error('Detalhes do erro:', error.error);
-            }
           }
         );
       }
     }
   }
-}
+
+  onImageChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.pet.imagens.push(reader.result as string);  // Adiciona a imagem ao array de imagens
+      };
+      reader.readAsDataURL(file);  // Converte o arquivo para base64
+    }
+  }
+  
+  removeImage(index: number) {
+    this.pet.imagens.splice(index, 1);  // Remove a imagem do array
+  }
+}  

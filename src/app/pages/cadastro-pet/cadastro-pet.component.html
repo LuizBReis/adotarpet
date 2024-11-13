@@ -74,12 +74,12 @@
     </div>
 
     <div>
-      <label for="imagem">Imagem:</label>
-      <input type="file" id="imagem" (change)="onImageChange($event)" />
-      <div *ngIf="imagemError" class="error-message">
-        Imagem é obrigatória.
-      </div>
+    <label for="imagens">Imagens:</label>
+    <input type="file" id="imagens" (change)="onImagesChange($event)" multiple />
+    <div *ngIf="imagemError" class="error-message">
+      Imagem é obrigatória.
     </div>
+  </div>
     
 
     <button type="submit" [disabled]="cadastroPetForm.invalid">Cadastrar Pet</button>

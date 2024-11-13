@@ -4,18 +4,18 @@ import { PetService } from '../../services/pet.service';
 import { AccesoService } from '../../services/acceso.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common'; // Importando CommonModule
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cadastro-pet',
   templateUrl: './cadastro-pet.component.html',
   styleUrls: ['./cadastro-pet.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule] // Incluindo tanto ReactiveFormsModule quanto CommonModule
+  imports: [ReactiveFormsModule, CommonModule]
 })
 export class CadastroPetComponent {
   cadastroPetForm: FormGroup;
-  imagem: File | null = null;
+  imagens: File[] = [];  // Array para armazenar várias imagens
   imagemError = false;
 
   constructor(
@@ -36,17 +36,14 @@ export class CadastroPetComponent {
     });
   }
 
-  // Manipular seleção de imagem
-  onImageChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.imagem = file;
-      this.imagemError = false;
-    }
+  // Manipular seleção de imagens
+  onImagesChange(event: any) {
+    this.imagens = Array.from(event.target.files);  // Armazena múltiplas imagens no array
+    this.imagemError = this.imagens.length === 0;
   }
 
   onSubmit() {
-    if (this.cadastroPetForm.valid && this.imagem) {
+    if (this.cadastroPetForm.valid && this.imagens.length > 0) {
       const donoId = this.accesoService.getDonoId();
       if (donoId) {
         const formData = new FormData();
@@ -58,7 +55,11 @@ export class CadastroPetComponent {
         formData.append('castrado', this.cadastroPetForm.value.castrado ? 'true' : 'false');
         formData.append('paraAdocao', this.cadastroPetForm.value.paraAdocao ? 'true' : 'false');
         formData.append('donoId', donoId.toString());
-        formData.append('imagem', this.imagem);  // Aqui você envia o arquivo de imagem
+
+        // Adiciona cada imagem ao FormData
+        this.imagens.forEach((imagem, index) => {
+          formData.append('imagens', imagem);
+        });
 
         this.petService.cadastrarPet(formData).subscribe(
           response => {
@@ -72,8 +73,8 @@ export class CadastroPetComponent {
         );
       }
     } else {
-      this.imagemError = !this.imagem;
-      console.error('Formulário inválido ou imagem não selecionada.');
+      this.imagemError = this.imagens.length === 0;
+      console.error('Formulário inválido ou nenhuma imagem selecionada.');
     }
   }
 }
