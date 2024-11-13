@@ -73,6 +73,15 @@
       </div>
     </div>
 
+    <div>
+      <label for="imagem">Imagem:</label>
+      <input type="file" id="imagem" (change)="onImageChange($event)" />
+      <div *ngIf="imagemError" class="error-message">
+        Imagem é obrigatória.
+      </div>
+    </div>
+    
+
     <button type="submit" [disabled]="cadastroPetForm.invalid">Cadastrar Pet</button>
     <button type="button" (click)="router.navigate(['/inicio'])" class="cancel-button">Cancelar</button>
   </form>

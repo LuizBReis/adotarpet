@@ -32,6 +32,10 @@ const Pet = sequelize.define('Pet', {
     },
     allowNull: false,
   },
+  imagem: {  // Novo campo
+    type: DataTypes.STRING,  // Caminho da imagem
+    allowNull: true,
+  }
 });
 
 // Definindo a relação entre Pet e Dono com onDelete: 'CASCADE'
@@ -39,3 +43,6 @@ Pet.belongsTo(Dono, { foreignKey: 'donoId', onDelete: 'CASCADE' });
 Dono.hasMany(Pet, { foreignKey: 'donoId', onDelete: 'CASCADE' });
 
 module.exports = Pet;
+
+
+

@@ -7,6 +7,9 @@ const donoRoutes = require('./routes/donoRoutes');
 const petRoutes = require('./routes/petRoutes');
 // const registerRoute = require('./routes/register');
 const authRoutes = require('./routes/authRoutes'); // Importei o authRoutes
+const path = require('path');
+
+
 
 const app = express();
 app.use(cors());
@@ -16,6 +19,12 @@ app.use(bodyParser.json());
 app.use('/api/donos', donoRoutes);
 app.use('/api/pets', petRoutes);
 app.use('/api/auth', authRoutes); // Adicionei a rota de autenticação
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+  setHeaders: (res, path) => {
+    res.set('Content-Type', 'image/png');
+  }
+}));
+
 
 sequelize.sync({ force: true }).then(() => {
   app.listen(3000, () => {

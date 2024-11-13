@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 
+
 interface Pet {
   id: number;
   nome: string;
@@ -15,6 +16,7 @@ interface Pet {
   paraAdocao: boolean;
   donoId: number;
   telefoneDono?: string; // Incluímos o telefone do dono
+  imagem?: string;
 }
 
 @Component({
@@ -29,7 +31,7 @@ export class AdotarPetComponent implements OnInit {
 
   constructor(
     private petService: PetService,
-    private router: Router,
+    public router: Router,
     private dialog: MatDialog
   ) {}
 

@@ -15,6 +15,8 @@ import { CommonModule } from '@angular/common'; // Importando CommonModule
 })
 export class CadastroPetComponent {
   cadastroPetForm: FormGroup;
+  imagem: File | null = null;
+  imagemError = false;
 
   constructor(
     private fb: FormBuilder, 
@@ -30,24 +32,35 @@ export class CadastroPetComponent {
       raca: ['', Validators.required],
       porte: ['', Validators.required],
       castrado: [false, Validators.required],
-      paraAdocao: [false, Validators.required] // Adicionando o campo para adoção aqui
+      paraAdocao: [false, Validators.required]
     });
   }
 
-  onSubmit() {
-    if (this.cadastroPetForm.valid) {
-      const donoId = this.accesoService.getDonoId();
-      console.log('ID do Dono:', donoId);
-      if (donoId) {
-        const petData = {
-          ...this.cadastroPetForm.value,
-          donoId: donoId
-        };
-        //petData.castrado = petData.castrado;
-        // Log para verificação
-        console.log('Dados do Pet a serem enviados:', petData);
+  // Manipular seleção de imagem
+  onImageChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.imagem = file;
+      this.imagemError = false;
+    }
+  }
 
-        this.petService.cadastrarPet(petData).subscribe(
+  onSubmit() {
+    if (this.cadastroPetForm.valid && this.imagem) {
+      const donoId = this.accesoService.getDonoId();
+      if (donoId) {
+        const formData = new FormData();
+        formData.append('nome', this.cadastroPetForm.value.nome);
+        formData.append('idade', this.cadastroPetForm.value.idade);
+        formData.append('tipo', this.cadastroPetForm.value.tipo);
+        formData.append('raca', this.cadastroPetForm.value.raca);
+        formData.append('porte', this.cadastroPetForm.value.porte);
+        formData.append('castrado', this.cadastroPetForm.value.castrado ? 'true' : 'false');
+        formData.append('paraAdocao', this.cadastroPetForm.value.paraAdocao ? 'true' : 'false');
+        formData.append('donoId', donoId.toString());
+        formData.append('imagem', this.imagem);  // Aqui você envia o arquivo de imagem
+
+        this.petService.cadastrarPet(formData).subscribe(
           response => {
             console.log('Pet cadastrado com sucesso', response);
             alert('Cadastro realizado com sucesso!');
@@ -57,11 +70,10 @@ export class CadastroPetComponent {
             console.error('Erro ao cadastrar pet', error);
           }
         );
-      } else {
-        console.error('ID do dono não encontrado.');
       }
     } else {
-      console.error('Formulário inválido:', this.cadastroPetForm.errors);
+      this.imagemError = !this.imagem;
+      console.error('Formulário inválido ou imagem não selecionada.');
     }
   }
 }

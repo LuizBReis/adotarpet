@@ -1,53 +1,78 @@
+/* ver aqui */
 .adotar-pet-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-  
-  .pet-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  
-  .pet-card {
-    width: 280px;
-    padding: 16px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s;
-  
-    &:hover {
-      box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
-    }
-  
-    .pet-info {
-      font-size: 14px;
-      color: #333;
-  
-      h3 {
-        margin: 0 0 8px;
-      }
-    }
-  
-    .adotar-btn {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
-  
-      &:hover {
-        background-color: #0056b3;
-      }
-    }
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+.pet-list {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os itens se movam para a próxima linha quando necessário */
+  gap: 16px; /* Espaço entre os cards */
+  justify-content: center; /* Centraliza os cards na tela */
+}
+
+.pet-card {
+  width: 280px;
+  padding: 16px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+  margin-bottom: 16px; /* Espaçamento entre as linhas */
+}
+
+.pet-info {
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+.pet-card img {
+  max-width: 100%; /* Limita a largura da imagem ao tamanho do container */
+  max-height: 200px; /* Limita a altura máxima da imagem */
+  object-fit: cover; /* Garante que a imagem seja cortada proporcionalmente, mantendo a área visível */
+  width: 100%;
+}
+
+
+.pet-info h3 {
+  margin: 0 0 8px;
+}
+
+.adotar-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.adotar-btn:hover {
+  background-color: #0056b3;
+}
+
+.voltar-para-inicio {
+  position: absolute;
+  top: 20px;
+  left: 20px; /* Mudei para left */
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.voltar-para-inicio:hover {
+  background-color: #0056b3;
+}
+
+

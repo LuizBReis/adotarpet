@@ -1,7 +1,9 @@
+<button class="voltar-para-inicio" (click)="router.navigate(['/inicio'])">Voltar ao Início</button>
 <div class="adotar-pet-container">
   <div *ngIf="petsParaAdocao.length > 0; else emptyList" class="pet-list">
     <div *ngFor="let pet of petsParaAdocao" class="pet-card">
       <div class="pet-info">
+        <img [src]="pet.imagem ? 'http://localhost:3000/' + pet.imagem : 'caminho_default.jpg'" alt="Imagem do Pet" />
         <h3>{{ pet.nome }}</h3>
         <p><strong>Idade:</strong> {{ pet.idade }} anos</p>
         <p><strong>Tipo:</strong> {{ pet.tipo }}</p>

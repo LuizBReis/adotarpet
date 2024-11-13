@@ -24,7 +24,7 @@ export class PetService {
   constructor(private http: HttpClient) {}
 
   // Método para cadastrar um novo pet
-  cadastrarPet(petData: Pet): Observable<any> {
+  cadastrarPet(petData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}`, petData); // Faz a requisição POST com os dados do pet
   }
 
@@ -37,6 +37,7 @@ export class PetService {
   updatePet(id: number, petData: Pet): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, petData); // Faz a requisição PUT para atualizar o pet
   }
+  
 
   // Método para excluir um pet pelo ID
   deletePet(id: number): Observable<any> {

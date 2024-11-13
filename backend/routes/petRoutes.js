@@ -3,24 +3,43 @@ const Pet = require('../models/pet');
 const Dono = require('../models/dono');
 const router = express.Router();
 
-// Criar Pet
-router.post('/', async (req, res) => {
+
+const multer = require('multer');
+const upload = multer({
+  dest: 'uploads',  // Diretório onde as imagens serão salvas
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.mimetype)) {
+      return cb(new Error('Tipo de arquivo não permitido'), false);
+    }
+    cb(null, true);
+  }
+});
+
+
+router.post('/', upload.single('imagem'), async (req, res) => {
   try {
     const { donoId, nome, idade, tipo, raca, castrado, porte, paraAdocao } = req.body;
+    const imagem = req.file ? req.file.path.replace(/\\/g, '/') : null;
+
+    console.log(req.file); // Verifique as informações do arquivo
+
+
+
     if (!donoId) {
       return res.status(400).json({ error: 'ID do dono é obrigatório' });
     }
-    const pet = await Pet.create({ donoId, nome, idade, tipo, raca, castrado, porte, paraAdocao });
 
-    // Associar o telefone do dono ao pet
-    const dono = await Dono.findByPk(donoId); // Pegando o dono associado
+    const pet = await Pet.create({ donoId, nome, idade, tipo, raca, castrado, porte, paraAdocao, imagem });
+
+    const dono = await Dono.findByPk(donoId);
     res.status(201).json({ pet, telefoneDono: dono.telefone });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
-// Obter todos os Pets
+// Obter todos os Pets (ver aqui)
 router.get('/', async (req, res) => {
   try {
     const pets = await Pet.findAll();
@@ -29,6 +48,7 @@ router.get('/', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 
 // Obter todos os Pets de um Dono específico
 router.get('/dono/:donoId', async (req, res) => {
