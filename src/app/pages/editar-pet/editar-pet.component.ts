@@ -38,10 +38,12 @@ export class EditarPetComponent implements OnInit {
     castrado: false,
     donoId: 0,
     paraAdocao: false,
-    imagens: [] // Corrigido com a vírgula
+    imagens: []
   };
   isEditMode = false;
   petId: number | null = null;
+  novasImagens: File[] = []; // Declaração de novas imagens como um array de arquivos
+  imagensParaRemover: string[] = []; // Array para armazenar as imagens a serem removidas
 
   constructor(
     private petService: PetService,
@@ -79,10 +81,35 @@ export class EditarPetComponent implements OnInit {
 
   saveChanges() {
     if (this.petId !== null) {
-      this.petService.updatePet(this.petId, this.pet).subscribe(
+      const formData = new FormData();
+      formData.append('nome', this.pet.nome);
+      formData.append('idade', String(this.pet.idade));
+      formData.append('tipo', this.pet.tipo);
+      formData.append('raca', this.pet.raca);
+      formData.append('porte', this.pet.porte);
+      formData.append('castrado', String(this.pet.castrado));
+      formData.append('paraAdocao', String(this.pet.paraAdocao));
+  
+      // Adicionar as imagens existentes no pet (caso haja), mas sem as imagens removidas
+      const imagensParaEnviar = this.pet.imagens.filter(image => !this.imagensParaRemover.includes(image));
+      for (let i = 0; i < imagensParaEnviar.length; i++) {
+        formData.append('imagens', imagensParaEnviar[i]);
+      }
+  
+      // Adicionar as novas imagens ao array
+      for (let i = 0; i < this.novasImagens.length; i++) {
+        formData.append('imagens', this.novasImagens[i]);
+      }
+  
+      // Adicionar as imagens a serem removidas
+      for (let i = 0; i < this.imagensParaRemover.length; i++) {
+        formData.append('removerImagens', this.imagensParaRemover[i]);
+      }
+  
+      // Enviar o FormData com todas as imagens (existentes e novas)
+      this.petService.updatePet(this.petId, formData).subscribe(
         (response) => {
           console.log('Dados do pet atualizados com sucesso!');
-          this.toggleEditMode();
           alert('Dados do pet atualizados com sucesso!');
           this.router.navigate(['/inicio']);
         },
@@ -115,18 +142,26 @@ export class EditarPetComponent implements OnInit {
     }
   }
 
-  onImageChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.pet.imagens.push(reader.result as string);  // Adiciona a imagem ao array de imagens
-      };
-      reader.readAsDataURL(file);  // Converte o arquivo para base64
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.novasImagens = Array.from(input.files); // Armazena os arquivos selecionados
     }
   }
+
+// Método para remover uma imagem do pet
+removerImagem(imagemUrl: string) {
+  if (this.petId !== null) {
+  this.petService.removerImagem(this.petId, imagemUrl).subscribe(
+    (petAtualizado) => {
+      this.pet = petAtualizado; // Atualiza o pet com os dados mais recentes, incluindo a lista de imagens
+      console.log('Imagem removida com sucesso', petAtualizado);
+    },
+    (erro) => {
+      console.error('Erro ao remover a imagem:', erro);
+    }
+  );
+}
+}
   
-  removeImage(index: number) {
-    this.pet.imagens.splice(index, 1);  // Remove a imagem do array
-  }
-}  
+}

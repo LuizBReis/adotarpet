@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
 
 // Definir a interface para um Pet
 interface Pet {
@@ -34,10 +36,19 @@ export class PetService {
   }
 
   // Método para atualizar os dados de um pet pelo ID
-  updatePet(id: number, petData: Pet): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, petData); // Faz a requisição PUT para atualizar o pet
-  }
-  
+updatePet(id: number, petData: FormData): Observable<any> {
+  return this.http.put(`${this.apiUrl}/${id}`, petData); // Faz a requisição PUT com os dados de FormData
+}
+
+  // Atualizar o método para remover a imagem e recarregar o pet atualizado
+removerImagem(id: number, imagemUrl: string): Observable<any> {
+  // Primeiro remove a imagem
+  return this.http.put(`${this.apiUrl}/${id}/remover-imagem`, { imagemUrl }).pipe(
+    // Após a remoção, fazemos a requisição GET para obter os dados atualizados
+    switchMap(() => this.http.get<any>(`${this.apiUrl}/${id}`))
+  );
+}
+
 
   // Método para excluir um pet pelo ID
   deletePet(id: number): Observable<any> {

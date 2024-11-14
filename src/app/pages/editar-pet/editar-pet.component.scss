@@ -1,122 +1,150 @@
 .pet-card {
-    max-width: 400px;
-    margin: 20px auto; /* Margem vertical para espaçamento */
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px; /* Bordas arredondadas */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
+  max-width: 600px; /* Aumentei a largura para acomodar melhor o conteúdo */
+  margin: 20px auto; 
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pet-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.pet-title {
+  font-size: 28px;
+  color: #333;
+}
+
+.pet-content {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os elementos se ajustem melhor em diferentes tamanhos de tela */
+  align-items: flex-start; /* Ajusta os itens no topo */
+  gap: 20px; /* Espaçamento entre as colunas */
+}
+
+.pet-image {
+  flex: 1 1 120px; /* Permite que a imagem tenha largura mínima e se ajuste */
+  text-align: center;
+  margin-bottom: 10px; /* Espaço inferior para separar a imagem do restante do conteúdo */
+  
+  img {
+    width: 150px; /* Imagem um pouco maior */
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    margin-bottom: 10px; /* Espaço entre a imagem e o botão de remoção */
   }
-  
-  .pet-header {
-    text-align: center;
-    margin-bottom: 20px; /* Espaçamento inferior */
-  }
-  
-  .pet-title {
-    font-size: 28px; /* Aumentei o tamanho da fonte */
-    color: #333; /* Cor de texto mais escura */
-  }
-  
-  .pet-content {
-    display: flex;
-    align-items: center;
-  }
-  
-  .pet-image {
-    flex: 1;
-    text-align: center;
-  
-    img {
-      width: 120px; /* Reduzi um pouco para não ocupar muito espaço */
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #ddd; /* Adicionei uma borda ao redor da imagem */
-    }
-  }
-  
-  .pet-details {
-    flex: 2; /* Alterei para dar um pouco mais de espaço para os detalhes */
-    padding-left: 20px;
-  
-    h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
-      color: #444; /* Cor de texto um pouco mais escura */
-    }
-  
-    p {
-      font-size: 16px;
-      margin: 5px 0;
-      color: #666; /* Cor de texto mais clara para informações */
-    }
-  
-    input {
-      width: 100%; /* Inputs ocupam 100% da largura disponível */
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px; /* Bordas arredondadas para inputs */
-      box-sizing: border-box; /* Para incluir padding e border no cálculo do tamanho */
-    }
-  }
-  
-  .mat-card-actions {
-    display: flex;
-    flex-direction: column; /* Mudar a direção para coluna */
-    align-items: center; /* Centralizar itens horizontalmente */
-    margin-top: 20px;
-    gap: 10px; /* Espaçamento entre os botões */
-    position: relative; /* Para posicionar o ícone */
-  }
-  
-  .icon-button {
-    cursor: pointer;
-    position: absolute; /* Para posicionar o ícone no canto */
-    top: 10px; /* Ajuste a posição conforme necessário */
-    right: 10px; /* Ajuste a posição conforme necessário */
-  }
-  
+
   button {
-    min-width: 120px; /* Garantir que os botões tenham largura mínima */
-    font-weight: bold; /* Tornar o texto do botão mais audacioso */
-    transition: background-color 0.3s, color 0.3s; /* Efeito de transição suave */
-  }
-  
-  /* Estilo para botões */
-  button.mat-raised-button {
-    background-color: #007bff; /* Azul padrão */
-    color: #ffffff; /* Texto branco */
-  
-    /* Efeitos de hover */
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
     &:hover {
-      background-color: #0056b3; /* Azul escuro ao passar o mouse */
+      background-color: #c82333;
     }
   }
-  
-  button.mat-raised-button[color="primary"] {
-    background-color: #28a745; /* Verde para botões primários */
-    color: #ffffff;
-  
-    &:hover {
-      background-color: #218838; /* Verde escuro ao passar o mouse */
-    }
+
+  input[type="file"] {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
   }
-  
-  button.mat-raised-button[color="warn"] {
-    background-color: #dc3545; /* Vermelho para botões de alerta */
-    color: #ffffff;
-  
-    &:hover {
-      background-color: #c82333; /* Vermelho escuro ao passar o mouse */
-    }
+}
+
+.pet-details {
+  flex: 2; 
+  padding-left: 20px;
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #444;
   }
-  
-  button.mat-raised-button[color="accent"] {
-    background-color: #17a2b8; /* Ciano para botões de ação */
-    color: #ffffff;
-  
-    &:hover {
-      background-color: #138496; /* Ciano escuro ao passar o mouse */
-    }
+
+  p {
+    font-size: 16px;
+    margin: 5px 0;
+    color: #666;
   }
-  
+
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+
+  mat-checkbox {
+    margin-top: 10px;
+  }
+}
+
+.mat-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+  position: relative;
+}
+
+.icon-button {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+button {
+  min-width: 120px;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button.mat-raised-button {
+  background-color: #007bff;
+  color: #ffffff;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+button.mat-raised-button[color="primary"] {
+  background-color: #28a745;
+  color: #ffffff;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
+button.mat-raised-button[color="warn"] {
+  background-color: #dc3545;
+  color: #ffffff;
+
+  &:hover {
+    background-color: #c82333;
+  }
+}
+
+button.mat-raised-button[color="accent"] {
+  background-color: #17a2b8;
+  color: #ffffff;
+
+  &:hover {
+    background-color: #138496;
+  }
+}
