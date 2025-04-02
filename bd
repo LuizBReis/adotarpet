@@ -1,0 +1,27 @@
+CREATE TABLE "donos" (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  senha VARCHAR(255) NOT NULL,
+  rua VARCHAR(255),
+  cidade VARCHAR(255),
+  estado VARCHAR(255),
+  cep VARCHAR(255),
+  latitude DECIMAL(9, 6),
+  longitude DECIMAL(9, 6)
+);
+
+CREATE TABLE "pets" (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  raca VARCHAR(255),
+  idade INTEGER,
+  porte VARCHAR(255),
+  castrado BOOLEAN,
+  donoId INTEGER NOT NULL,
+  CONSTRAINT fk_dono
+    FOREIGN KEY (donoId) 
+    REFERENCES "donos"(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
