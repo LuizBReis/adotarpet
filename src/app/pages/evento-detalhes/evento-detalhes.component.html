@@ -1,0 +1,39 @@
+<div class="detalhes-container" *ngIf="evento">
+  <button class="voltar-btn" (click)="voltar()">← Voltar</button>
+  
+  <h1 class="titulo-evento">{{ evento.titulo }}</h1>
+  
+  <div class="detalhes-content">
+    <div class="imagem-container">
+      <img *ngIf="evento.imagem" [src]="'http://localhost:3000/' + evento.imagem" alt="Imagem do Evento" class="imagem-evento">
+      <div *ngIf="!evento.imagem" class="imagem-placeholder">Sem imagem</div>
+    </div>
+    
+    <div class="info-container">
+      <div class="endereco-container">
+        <span class="pin-icon">📍</span>
+        <p class="endereco">{{ evento.local }}</p>
+      </div>
+      
+      <!-- Mapa - Posicionado após o endereço -->
+      <div id="map" class="map-container" *ngIf="mapReady"></div>
+      
+      <div class="descricao-container">
+        <h2>Descrição</h2>
+        <p class="descricao">{{ evento.descricao }}</p>
+      </div>
+      
+      <div *ngIf="evento.ongs" class="ongs-container">
+        <h2>ONGs participantes</h2>
+        <ul class="ongs-lista">
+          <li *ngFor="let ong of parseOngs(evento.ongs)">{{ ong }}</li>
+        </ul>
+      </div>
+      
+      <div *ngIf="evento.contato" class="contato-container">
+        <h2>Contato</h2>
+        <p class="contato">{{ evento.contato }}</p>
+      </div>
+    </div>
+  </div>
+</div>

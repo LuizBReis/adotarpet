@@ -1,0 +1,120 @@
+.cadastro-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  
+  h1 {
+    text-align: center;
+    color: #CE5F5F;
+    margin-bottom: 30px;
+  }
+}
+
+.form-group {
+  margin-bottom: 20px;
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  input[type="text"],
+  input[type="datetime-local"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    
+    &:focus {
+      border-color: #CE5F5F;
+      outline: none;
+    }
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+}
+
+.file-upload {
+  position: relative;
+  
+  input[type="file"] {
+    display: none;
+  }
+  
+  .file-upload-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .file-upload-button {
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 10px;
+    transition: all 0.3s;
+    
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+  
+  .file-upload-name {
+    color: #666;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  
+  button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+}
+
+.submit-button {
+  background-color: #CE5F5F;
+  color: white;
+  
+  &:hover {
+    background-color: #b84d4d;
+  }
+  
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+}
+
+.cancel-button {
+  background-color: #f0f0f0;
+  color: #333;
+  
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
+
+.error-message {
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 5px;
+}

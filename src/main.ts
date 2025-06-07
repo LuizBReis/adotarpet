@@ -21,10 +21,17 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { AppComponent } from './app/app.component';
+import { EventosComponent } from './app/pages/eventos/eventos.component';
+import { CadastroEventoComponent } from './app/pages/cadastro-evento/cadastro-evento.component';
+import { appConfig } from './app/app.config';
+import { EditarEventoComponent } from './app/pages/editar-evento/editar-evento.component';
+import { EditarEventoFormComponent } from './app/pages/editar-evento/editar-evento-form.component';
+
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(),
+    appConfig,
     provideRouter([
       { path: 'login', component: LoginComponent },
       { path: 'registro', component: RegistroComponent },
@@ -35,6 +42,12 @@ bootstrapApplication(AppComponent, {
       { path: 'cadastro-pet', component: CadastroPetComponent }, 
       {path: 'editar-pet', component: EditarPetComponent},
       {path: 'adotar-pet', component: AdotarPetComponent},
+      {path: 'eventos', component: EventosComponent},
+      {path: 'cadastro-eventos', component: CadastroEventoComponent},
+      {path: 'evento/:id', loadComponent: () => import('./app/pages/evento-detalhes/evento-detalhes.component').then(m => m.EventoDetalhesComponent)},
+      { path: 'editar-evento', component: EditarEventoComponent },
+      { path: 'editar-evento/:id', component: EditarEventoFormComponent }
+
     ]),
     provideAnimations(),
     ReactiveFormsModule, // Adicionar ReactiveFormsModule aqui

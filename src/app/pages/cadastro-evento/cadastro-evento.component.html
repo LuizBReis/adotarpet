@@ -1,0 +1,70 @@
+<div class="cadastro-container">
+  <h1>Adicionar Evento</h1>
+  
+  <form [formGroup]="eventoForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="titulo">Nome:</label>
+      <input id="titulo" type="text" formControlName="titulo" placeholder="Digite o nome do evento">
+      <div *ngIf="eventoForm.get('titulo')?.invalid && eventoForm.get('titulo')?.touched" class="error-message">
+        <small>Nome do evento é obrigatório</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="data">Data e Hora:</label>
+      <input id="data" type="datetime-local" formControlName="data">
+      <div *ngIf="eventoForm.get('data')?.invalid && eventoForm.get('data')?.touched" class="error-message">
+        <small>Data e hora são obrigatórias</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="local">Endereço Completo (Obrigatório)</label>
+      <input id="local" type="text" formControlName="local" placeholder="Digite o endereço completo">
+      <div *ngIf="eventoForm.get('local')?.invalid && eventoForm.get('local')?.touched" class="error-message">
+        <small>Endereço é obrigatório</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="descricao">Descrição do Evento (Obrigatório)</label>
+      <textarea id="descricao" formControlName="descricao" rows="4" placeholder="Descreva o evento"></textarea>
+      <div *ngIf="eventoForm.get('descricao')?.invalid && eventoForm.get('descricao')?.touched" class="error-message">
+        <small>Descrição é obrigatória</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="ongs">ONG(s) Participantes (Opcional)</label>
+      <input id="ongs" type="text" formControlName="ongs" placeholder="Digite as ONGs participantes">
+    </div>
+
+    <!-- cadastro-evento.component.html -->
+    <div class="form-group">
+      <label for="contato">Contato (Opcional)</label>
+      <input id="contato" type="text" formControlName="contato" placeholder="Telefone ou e-mail para contato">
+    </div>
+
+    <!-- cadastro-evento.component.html -->
+    <div class="form-group">
+      <label for="cep">CEP (Obrigatório)</label>
+      <input id="cep" type="text" formControlName="cep" placeholder="CEP do local">
+    </div>
+
+    <div class="form-group">
+      <label>Imagens:</label>
+      <div class="file-upload">
+        <input type="file" id="imagem" (change)="onFileSelected($event)" accept="image/*">
+        <label for="imagem" class="file-upload-label">
+          <span class="file-upload-button">Escolher arquivo</span>
+          <span class="file-upload-name">{{ selectedFileName || 'Nenhum arquivo selecionado' }}</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="submit-button" [disabled]="eventoForm.invalid">Adicionar evento</button>
+      <button type="button" class="cancel-button" (click)="onCancel()">Cancelar</button>
+    </div>
+  </form>
+</div>

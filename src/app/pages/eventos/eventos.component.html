@@ -1,0 +1,28 @@
+<button class="voltar-para-inicio" (click)="router.navigate(['/inicio'])">Voltar ao Início</button>
+<div class="eventos-container">
+  <div *ngIf="eventos.length > 0; else emptyList" class="eventos-list">
+    <div *ngFor="let evento of eventos" class="evento-card">
+      <div class="evento-imagem">
+        <img *ngIf="evento.imagem" [src]="'http://localhost:3000/' + evento.imagem" alt="Imagem do Evento" />
+        <div *ngIf="!evento.imagem" class="imagem-placeholder">
+          <span>Sem imagem</span>
+        </div>
+      </div>
+      <div class="evento-info">
+        <h3>{{ evento.titulo }}</h3>
+        <p class="evento-descricao">{{ evento.descricao }}</p>
+        
+        <div class="evento-detalhes">
+          <p><strong>Data:</strong> {{ evento.data }}</p>
+          <p *ngIf="evento.horaInicio && evento.horaFim"><strong>Horário:</strong> {{ evento.horaInicio }} às {{ evento.horaFim }}</p>
+          <p *ngIf="evento.local"><strong>Local:</strong> {{ evento.local }}</p>
+        </div>
+        
+        <button class="saiba-mais-btn" (click)="verDetalhes(evento)">Saiba mais</button>
+      </div>
+    </div>
+  </div>
+  <ng-template #emptyList>
+    <p>Não há eventos cadastrados no momento.</p>
+  </ng-template>
+</div>

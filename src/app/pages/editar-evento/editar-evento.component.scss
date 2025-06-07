@@ -1,0 +1,65 @@
+.eventos-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.eventos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.evento-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    
+    h3 {
+      margin: 0;
+      color: #333;
+    }
+    
+    .acoes {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+  
+  .info {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
+  }
+}
+
+.btn-editar, .btn-excluir {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.btn-editar {
+  color: #2e7d32;
+}
+
+.btn-excluir {
+  color: #c62828;
+}

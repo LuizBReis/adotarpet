@@ -1,26 +1,23 @@
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-  <div>
-    <label for="email">Email:</label>
-    <input id="email" formControlName="email" type="email" required>
-    <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-      <small>Email inválido.</small>
+<div class="app-container">
+  <div class="login-wrapper">
+    <div class="login-container">
+      <img src="/logo.png" alt="PETMATCH" class="logo">
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <div class="input-group">
+          <input id="email" formControlName="email" type="email" required placeholder="EMAIL">
+        </div>
+        <div class="input-group">
+          <input id="senha" formControlName="senha" type="password" required placeholder="SENHA">
+        </div>
+        <button type="submit" class="login-btn">LOGIN</button>
+        <div *ngIf="errorMessage" class="error-message global-error">
+          <p>{{ errorMessage }}</p>
+        </div>
+        <div class="login-footer">
+          <a href="/registro" class="register-link">REGISTRE-SE</a>
+          <a href="#" class="forgot-link">ESQUECI MINHA SENHA</a>
+        </div>
+      </form>
     </div>
   </div>
-
-  <div>
-    <label for="senha">Senha:</label>
-    <input id="senha" formControlName="senha" type="password" required>
-    <div *ngIf="loginForm.get('senha')?.invalid && loginForm.get('senha')?.touched">
-      <small>Senha é obrigatória.</small>
-    </div>
-  </div>
-
-  <button type="submit">Login</button>
-
-  <!-- Exibir mensagem de erro -->
-  <div *ngIf="errorMessage" class="error-message">
-    <p>{{ errorMessage }}</p>
-  </div>
-
-  <a href="/registro" class="register-link">Registrar</a>
-</form>
+</div>

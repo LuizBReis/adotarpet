@@ -5,6 +5,7 @@ require('dotenv').config(); // Carrega variáveis do .env
 const sequelize = require('./config/database');
 const donoRoutes = require('./routes/donoRoutes');
 const petRoutes = require('./routes/petRoutes');
+const eventosRoutes = require('./routes/eventosRoutes');
 // const registerRoute = require('./routes/register');
 const authRoutes = require('./routes/authRoutes'); // Importei o authRoutes
 const path = require('path');
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 // Rotas
 app.use('/api/donos', donoRoutes);
 app.use('/api/pets', petRoutes);
+app.use('/api/eventos', eventosRoutes);
 app.use('/api/auth', authRoutes); // Adicionei a rota de autenticação
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
   setHeaders: (res, path) => {

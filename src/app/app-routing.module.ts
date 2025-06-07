@@ -7,6 +7,9 @@ import { ProfileComponent } from './pages/profile/profile.component'; // Adicion
 import { CadastroPetComponent } from './pages/cadastro-pet/cadastro-pet.component'; // Importe o CadastroPetComponent
 import { EditarPetComponent } from './pages/editar-pet/editar-pet.component';
 import { AdotarPetComponent } from './pages/adotar-pet/adotar-pet.component';
+import { EventosComponent } from './pages/eventos/eventos.component';
+import { EditarEventoComponent } from './pages/editar-evento/editar-evento.component';
+import { EditarEventoFormComponent } from './pages/editar-evento/editar-evento-form.component'; 
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redireciona para login se estiver vazio
@@ -17,6 +20,10 @@ const routes: Routes = [
   { path: 'cadastro-pet', component: CadastroPetComponent },
   { path: 'editar-pet/:id', component: EditarPetComponent }, // Adicionado o parâmetro :id
   { path: 'adotar-pet', component: AdotarPetComponent },
+  { path: 'eventos', component: EventosComponent },
+  { path: 'cadastro-eventos', component: CadastroPetComponent },
+  { path: 'editar-evento', component: EditarEventoComponent },
+  { path: 'editar-evento/:id', component: EditarEventoFormComponent }
 ];
 
 @NgModule({

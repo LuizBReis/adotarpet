@@ -14,7 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  errorMessage: string | null = null; // Propriedade para armazenar mensagem de erro
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -22,8 +22,8 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      senha: ['', [Validators.required]]
+      email: ['', Validators.required], // Removi Validators.email para simplificar
+      senha: ['', Validators.required]
     });
   }
 
@@ -32,22 +32,25 @@ export class LoginComponent {
       const { email, senha } = this.loginForm.value;
       this.accesoService.login(email, senha).subscribe(
         (res: any) => {
-          console.log('Resposta do login:', res); // Verifique a resposta
+          console.log('Resposta do login:', res);
           localStorage.setItem('token', res.token);
           
           if (res.id) {
-            this.accesoService.setDonoId(res.id); // Armazena o ID do dono
+            this.accesoService.setDonoId(res.id);
             this.router.navigate(['/inicio']);
           } else {
-            this.errorMessage = 'Credenciais inválidas. Tente novamente.'; // Mensagem de erro
+            this.errorMessage = 'CREDENCIAIS INVÁLIDAS. TENTE NOVAMENTE.';
             console.error('Dono ID não encontrado na resposta');
           }
         },
         (err) => {
-          this.errorMessage = 'E-mail ou senha inválidos. Tente novamente.'; // Mensagem de erro
+          this.errorMessage = 'EMAIL OU SENHA INVÁLIDOS. TENTE NOVAMENTE.';
           console.error('Erro ao fazer login', err);
         }
       );
+    } else {
+      // Não exibe erros locais, apenas submete para a API
+      this.loginForm.markAllAsTouched(); // Garante que o formulário seja considerado inválido
     }
   }
 

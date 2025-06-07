@@ -57,6 +57,21 @@ export class SidebarComponent implements OnInit {
     this.router.navigate(['/cadastro-pet']);
   }
 
+  Eventos() {
+    console.log('Entrando em Eventos');
+    this.router.navigate(['/eventos']);
+  }
+
+  cadastroEvento() {
+    console.log('Entrando em Eventos');
+    this.router.navigate(['/cadastro-eventos']);
+  }
+
+    editarEvento() {
+    console.log('Entrando em Eventos');
+    this.router.navigate(['/editar-evento']);
+  }
+
   adotarPet() {
     console.log('Adotando pet');
     this.router.navigate(['/adotar-pet']);
