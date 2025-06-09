@@ -3,13 +3,15 @@ import { Router } from '@angular/router';
 import { EventoService, Evento } from '../../services/evento.service';
 import { CommonModule } from '@angular/common';
 import { DatePipe } from '@angular/common';
+import { HeaderComponent } from '../../layout/header/header.component';
+import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 
 @Component({
   selector: 'app-eventos',
   templateUrl: './eventos.component.html',
   styleUrls: ['./eventos.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HeaderComponent, SidebarComponent],
   providers: [DatePipe]
 })
 export class EventosComponent implements OnInit {

@@ -3,6 +3,8 @@ import { PetService } from '../../services/pet.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../layout/header/header.component';
+import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 
 interface Pet {
   id: number;
@@ -24,9 +26,10 @@ interface Pet {
   templateUrl: './adotar-pet.component.html',
   styleUrls: ['./adotar-pet.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, HeaderComponent, SidebarComponent]
 })
 export class AdotarPetComponent implements OnInit {
+
   petsParaAdocao: Pet[] = [];
 
   constructor(

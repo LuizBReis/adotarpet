@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventoService, Evento } from '../../services/evento.service';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../layout/header/header.component';
+import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 
 @Component({
   selector: 'app-editar-evento',
   templateUrl: './editar-evento.component.html',
   styleUrls: ['./editar-evento.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, HeaderComponent, SidebarComponent]
 })
 export class EditarEventoComponent implements OnInit {
   eventos: Evento[] = [];

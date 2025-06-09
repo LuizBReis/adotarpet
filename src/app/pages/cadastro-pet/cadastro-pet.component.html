@@ -1,4 +1,8 @@
-<div class="cadastro-pet-container">
+<div class="app-container">
+  <app-header></app-header>
+  <app-sidenav></app-sidenav>
+  <div class="content">
+    <div class="cadastro-pet-container">
   <h2>Cadastro de Pet</h2>
   <form [formGroup]="cadastroPetForm" (ngSubmit)="onSubmit()">
     <div>
@@ -85,4 +89,6 @@
     <button type="submit" [disabled]="cadastroPetForm.invalid">Cadastrar Pet</button>
     <button type="button" (click)="router.navigate(['/inicio'])" class="cancel-button">Cancelar</button>
   </form>
+</div>
+  </div>
 </div>

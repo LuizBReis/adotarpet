@@ -1,4 +1,8 @@
-<div class="detalhes-container" *ngIf="evento">
+<div class="app-container">
+  <app-header></app-header>
+  <app-sidenav></app-sidenav>
+  <div class="content">
+    <div class="detalhes-container" *ngIf="evento">
   <button class="voltar-btn" (click)="voltar()">← Voltar</button>
   
   <h1 class="titulo-evento">{{ evento.titulo }}</h1>
@@ -35,5 +39,7 @@
         <p class="contato">{{ evento.contato }}</p>
       </div>
     </div>
+  </div>
+</div>
   </div>
 </div>

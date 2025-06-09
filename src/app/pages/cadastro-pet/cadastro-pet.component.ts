@@ -5,13 +5,15 @@ import { AccesoService } from '../../services/acceso.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../layout/header/header.component';
+import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 
 @Component({
   selector: 'app-cadastro-pet',
   templateUrl: './cadastro-pet.component.html',
   styleUrls: ['./cadastro-pet.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, HeaderComponent, SidebarComponent]
 })
 export class CadastroPetComponent {
   cadastroPetForm: FormGroup;

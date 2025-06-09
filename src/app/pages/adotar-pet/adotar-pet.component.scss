@@ -1,0 +1,134 @@
+.adotar-pet-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background-color: #fff0f0;
+}
+
+.titulo-lista {
+  font-size: 24px;
+  font-weight: bold;
+  color: #d94f5c;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.pet-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+.pet-card {
+  background-color: #ffcbd1;
+  border-radius: 20px;
+  padding: 16px;
+  width: 250px;
+  text-align: center;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.pet-card:hover {
+  transform: scale(1.03);
+}
+
+.pet-image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pet-card img {
+  width: 100%;
+  height: 180px;
+  border-radius: 16px;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.seta {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  margin: 0 8px;
+  color: #555;
+}
+
+.pet-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #2d2d2d;
+}
+
+.pet-card p {
+  margin: 2px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.adotar-btn {
+  background-color: #b7c6ff;
+  color: #000;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.adotar-btn:hover {
+  background-color: #9daff0;
+}
+
+
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Ajuste para a altura total da tela */
+  }
+  
+  app-header {
+    flex: 0 0 80px; /* Ajuste a altura do cabeçalho */
+    background-color: #f8f9fa;
+  }
+  
+  .app-sidenav {
+    flex: 0 0 250px; /* Largura fixa para a sidebar */
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    position: fixed; /* Fixa a sidebar no lado esquerdo */
+    top: 80px; /* Ajuste conforme a altura do cabeçalho */
+    bottom: 0;
+    overflow-y: auto;
+  }
+  
+  .content {
+    margin-left: 250px; /* Ajusta o conteúdo para não ficar sobre a sidebar */
+    padding: 20px;
+    background-color: #f0f0f0;
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  @media (max-width: 768px) {
+    .app-sidenav {
+      width: 100%;
+      height: auto;
+      position: relative; /* Remove a posição fixa em telas menores */
+      top: 0;
+    }
+  
+    .content {
+      margin-left: 0;
+    }
+  }
+  

@@ -3,13 +3,15 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventoService, Evento } from '../../services/evento.service';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../layout/header/header.component';
+import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 
 @Component({
   selector: 'app-editar-evento-form',
   templateUrl: './editar-evento-form.component.html',
   styleUrls: ['./editar-evento-form.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, HeaderComponent, SidebarComponent]
 })
 export class EditarEventoFormComponent implements OnInit {
   eventoForm: FormGroup;

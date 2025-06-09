@@ -1,4 +1,8 @@
-<mat-card class="profile-card custom-card">
+<div class="app-container">
+  <app-header></app-header>
+  <app-sidenav></app-sidenav>
+  <div class="content">
+    <mat-card class="profile-card custom-card">
   <mat-card-header>
     <div class="profile-header">
       <h1 class="profile-title">Dono Profile</h1>
@@ -59,3 +63,5 @@
     <button mat-raised-button color="primary" (click)="router.navigate(['/inicio'])">Voltar</button>
   </mat-card-actions>
 </mat-card>
+  </div>
+</div>

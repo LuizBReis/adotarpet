@@ -3,13 +3,15 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common'; // talvez necessário
 import { EventoService } from '../../services/evento.service';
+import { HeaderComponent } from '../../layout/header/header.component';
+import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 
 @Component({
   standalone: true,
   selector: 'app-cadastro-evento',
   templateUrl: './cadastro-evento.component.html',
   styleUrls: ['./cadastro-evento.component.scss'],
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, HeaderComponent, SidebarComponent]
 })
 export class CadastroEventoComponent {
   eventoForm: FormGroup;

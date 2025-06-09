@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { HeaderComponent } from '../../layout/header/header.component';
+import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 
 interface Dono {
   nome: string;
@@ -22,7 +24,7 @@ interface Dono {
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, FormsModule]
+  imports: [CommonModule, MatCardModule, MatButtonModule, FormsModule, HeaderComponent, SidebarComponent]
 })
 export class ProfileComponent implements OnInit {
   dono: Dono = {

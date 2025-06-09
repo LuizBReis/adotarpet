@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventoService, Evento } from '../../services/evento.service';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../layout/header/header.component';
+import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 
 declare let L: any;
 
@@ -10,7 +12,7 @@ declare let L: any;
   templateUrl: './evento-detalhes.component.html',
   styleUrls: ['./evento-detalhes.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HeaderComponent, SidebarComponent],
 })
 export class EventoDetalhesComponent implements OnInit, OnDestroy, AfterViewInit {
   evento: Evento | null = null;

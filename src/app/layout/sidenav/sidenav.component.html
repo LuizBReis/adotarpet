@@ -39,19 +39,19 @@
     </li>
     <li>
       <a (click)="Eventos()">
-        <span class="material-icons">event</span>
+        <span class="menu-icon material-icons">event</span>
         <span class="menu-text">Eventos</span>
       </a>
     </li>
     <li>
       <a (click)="cadastroEvento()">
-        <span class="material-icons">add</span>
+        <span class="menu-icon material-icons">add_circle</span>
         <span class="menu-text">Cadastrar Evento</span>
       </a>
     </li>
         <li>
       <a (click)="editarEvento()">
-        <span class="material-icons">add</span>
+        <span class="menu-icon material-icons">edit</span>
         <span class="menu-text">Editar Evento</span>
       </a>
     </li>
@@ -71,7 +71,7 @@
     <ul *ngIf="pets.length > 0" style="padding-left: 20px;">
       <li *ngFor="let pet of pets">
         <span class="menu-icon material-icons">pets</span>
-        <span (click)="editarPet(pet.id)" style="cursor: pointer;">{{ pet.nome }} - {{ pet.raca }}</span> <!-- Chama editarPet ao clicar -->
+        <span (click)="editarPet(pet.id)" style="cursor: pointer;">  {{ pet.nome }} - {{ pet.raca }}</span>
       </li>
     </ul>
     <li>

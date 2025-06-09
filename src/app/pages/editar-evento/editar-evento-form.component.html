@@ -1,52 +1,58 @@
-<div class="form-container">
-  <h1>Editar Evento</h1>
-  
-  <form [formGroup]="eventoForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label>Título*</label>
-      <input type="text" formControlName="titulo" placeholder="Nome do evento">
-    </div>
+<div class="app-container">
+  <app-header></app-header>
+  <app-sidenav></app-sidenav>
+  <div class="content">
+    <div class="form-container">
+      <h1>Editar Evento</h1>
 
-    <div class="form-group">
-      <label>Data e Hora*</label>
-      <input type="datetime-local" formControlName="data">
-    </div>
+      <form [formGroup]="eventoForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Título*</label>
+          <input type="text" formControlName="titulo" placeholder="Nome do evento" />
+        </div>
 
-    <div class="form-group">
-      <label>Local*</label>
-      <input type="text" formControlName="local" placeholder="Endereço completo">
-    </div>
+        <div class="form-group">
+          <label>Data e Hora*</label>
+          <input type="datetime-local" formControlName="data" />
+        </div>
 
-    <div class="form-group">
-      <label>Descrição*</label>
-      <textarea formControlName="descricao" rows="4"></textarea>
-    </div>
+        <div class="form-group">
+          <label>Local*</label>
+          <input type="text" formControlName="local" placeholder="Endereço completo" />
+        </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label>ONGs Participantes</label>
-        <input type="text" formControlName="ongs">
-      </div>
+        <div class="form-group">
+          <label>Descrição*</label>
+          <textarea formControlName="descricao" rows="4"></textarea>
+        </div>
 
-      <div class="form-group">
-        <label>Contato</label>
-        <input type="text" formControlName="contato">
-      </div>
-    </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>ONGs Participantes</label>
+            <input type="text" formControlName="ongs" />
+          </div>
 
-    <div class="form-group">
-      <label>CEP</label>
-      <input type="text" formControlName="cep">
-    </div>
+          <div class="form-group">
+            <label>Contato</label>
+            <input type="text" formControlName="contato" />
+          </div>
+        </div>
 
-    <div class="form-group">
-      <label>Imagem</label>
-      <input type="file" (change)="onFileChange($event)">
-    </div>
+        <div class="form-group">
+          <label>CEP</label>
+          <input type="text" formControlName="cep" />
+        </div>
 
-    <div class="form-actions">
-      <button type="button" (click)="cancelar()">Cancelar</button>
-      <button type="submit" [disabled]="eventoForm.invalid">Salvar</button>
+        <div class="form-group">
+          <label>Imagem</label>
+          <input type="file" (change)="onFileChange($event)" />
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn-salvar" [disabled]="eventoForm.invalid">Salvar</button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>

@@ -1,4 +1,8 @@
-<div class="cadastro-container">
+<div class="app-container">
+  <app-header></app-header>
+  <app-sidenav></app-sidenav>
+  <div class="content">
+    <div class="cadastro-container">
   <h1>Adicionar Evento</h1>
   
   <form [formGroup]="eventoForm" (ngSubmit)="onSubmit()">
@@ -67,4 +71,6 @@
       <button type="button" class="cancel-button" (click)="onCancel()">Cancelar</button>
     </div>
   </form>
+</div>
+  </div>
 </div>
