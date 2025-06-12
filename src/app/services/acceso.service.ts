@@ -31,6 +31,17 @@ export class AccesoService {
     return this.http.post('http://localhost:3000/api/donos', dono);
   }
 
+  // Novo método para solicitar redefinição de senha
+  requestPasswordReset(email: string): Observable<any> {
+    // Você pode criar um endpoint específico na sua API para isso, por exemplo: /api/auth/forgot-password
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+  }
+
+  // NOVO MÉTODO: Para redefinir a senha usando o token
+  resetPassword(token: string, novaSenha: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password/${token}`, { novaSenha });
+  }
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem(this.donoIdKey); // Remove o ID do dono ao fazer logout

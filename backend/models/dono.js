@@ -31,13 +31,21 @@ const Dono = sequelize.define('Dono', {
       len: [10, 11], // Número deve ter entre 10 e 11 dígitos
     },
   },
-  
   rua: DataTypes.STRING,
   cidade: DataTypes.STRING,
   estado: DataTypes.STRING,
   cep: DataTypes.STRING,
   latitude: DataTypes.DECIMAL(9, 6),
   longitude: DataTypes.DECIMAL(9, 6),
+  // NOVOS CAMPOS:
+  passwordResetToken: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  passwordResetExpires: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
 });
 
 Dono.beforeCreate(async (dono) => {

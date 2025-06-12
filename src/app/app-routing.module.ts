@@ -10,6 +10,8 @@ import { AdotarPetComponent } from './pages/adotar-pet/adotar-pet.component';
 import { EventosComponent } from './pages/eventos/eventos.component';
 import { EditarEventoComponent } from './pages/editar-evento/editar-evento.component';
 import { EditarEventoFormComponent } from './pages/editar-evento/editar-evento-form.component'; 
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redireciona para login se estiver vazio
@@ -23,7 +25,9 @@ const routes: Routes = [
   { path: 'eventos', component: EventosComponent },
   { path: 'cadastro-eventos', component: CadastroPetComponent },
   { path: 'editar-evento', component: EditarEventoComponent },
-  { path: 'editar-evento/:id', component: EditarEventoFormComponent }
+  { path: 'editar-evento/:id', component: EditarEventoFormComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent},
+  { path: 'reset-password/:token', component: ResetPasswordComponent },
 ];
 
 @NgModule({

@@ -26,6 +26,9 @@ import { CadastroEventoComponent } from './app/pages/cadastro-evento/cadastro-ev
 import { appConfig } from './app/app.config';
 import { EditarEventoComponent } from './app/pages/editar-evento/editar-evento.component';
 import { EditarEventoFormComponent } from './app/pages/editar-evento/editar-evento-form.component';
+import { ForgotPasswordComponent } from './app/pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './app/pages/reset-password/reset-password.component';
+
 
 
 bootstrapApplication(AppComponent, {
@@ -46,7 +49,9 @@ bootstrapApplication(AppComponent, {
       {path: 'cadastro-eventos', component: CadastroEventoComponent},
       {path: 'evento/:id', loadComponent: () => import('./app/pages/evento-detalhes/evento-detalhes.component').then(m => m.EventoDetalhesComponent)},
       { path: 'editar-evento', component: EditarEventoComponent },
-      { path: 'editar-evento/:id', component: EditarEventoFormComponent }
+      { path: 'editar-evento/:id', component: EditarEventoFormComponent },
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'reset-password', component: ResetPasswordComponent }
 
     ]),
     provideAnimations(),
