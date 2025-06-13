@@ -1,0 +1,81 @@
+<div class="app-container">
+  <app-header></app-header>
+  <app-sidenav></app-sidenav>
+  <div class="content">
+    <div class="form-container">
+
+        <div class="user-management-container">
+        <h2>Gerenciamento de Usuários</h2>
+
+        <div *ngIf="loading" class="loading-message message-box success-message">
+            <p>Carregando usuários...</p>
+        </div>
+
+        <div *ngIf="errorMessage" class="message-box error-message">
+            <p>{{ errorMessage }}</p>
+        </div>
+
+        <div *ngIf="message" class="message-box success-message">
+            <p>{{ message }}</p>
+        </div>
+
+        <div *ngIf="!loading && donos.length === 0 && !errorMessage" class="message-box">
+            <p>Nenhum usuário encontrado.</p>
+        </div>
+
+        <div *ngIf="!loading && donos.length > 0">
+            <h3>Lista de Usuários</h3>
+            <table class="user-table">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Papel Atual</th>
+                <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let dono of donos">
+                <td>{{ dono.id }}</td>
+                <td>{{ dono.nome }}</td>
+                <td>{{ dono.email }}</td>
+                <td>{{ dono.role }}</td>
+                <td>
+                    <button class="edit-button" (click)="selectDono(dono)">Editar Papel</button>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="selectedDono" class="edit-form-card">
+            <h3>Editar Papel de {{ selectedDono.nome }}</h3>
+            <form [formGroup]="editUserForm" (ngSubmit)="saveRole()">
+            <div class="input-group">
+                <label for="nome">Nome:</label>
+                <input id="nome" formControlName="nome" type="text">
+            </div>
+            <div class="input-group">
+                <label for="email">Email:</label>
+                <input id="email" formControlName="email" type="email">
+            </div>
+            <div class="input-group">
+                <label for="role">Novo Papel:</label>
+                <select id="role" formControlName="role">
+                <option *ngFor="let role of roles" [value]="role">{{ role | uppercase }}</option>
+                </select>
+                <div *ngIf="editUserForm.get('role')?.invalid && editUserForm.get('role')?.touched" class="validation-error">
+                <span>Por favor, selecione um papel.</span>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="save-button">Salvar</button>
+                <button type="button" class="cancel-button" (click)="cancelEdit()">Cancelar</button>
+            </div>
+            </form>
+        </div>
+        </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const Evento = require('../models/eventos');
+const { auth, authorize } = require('./authRoutes'); // <--- Importe os middlewares daqui
 
 // Configuração do multer para upload de imagens
 const storage = multer.diskStorage({
@@ -14,7 +15,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ 
+const upload = multer({
   storage: storage,
   limits: {
     fileSize: 5 * 1024 * 1024 // Limite de 5MB
@@ -28,7 +29,7 @@ const upload = multer({
   }
 });
 
-// GET todos os eventos
+// GET todos os eventos (rota pública)
 router.get('/', async (req, res) => {
   try {
     const eventos = await Evento.findAll({
@@ -40,11 +41,14 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST novo evento (com upload de imagem)
-router.post('/', upload.single('imagem'), async (req, res) => {
+// POST novo evento (com upload de imagem) - Protegido por auth e authorize
+// Apenas ONGs e Admins podem criar eventos
+router.post('/', auth, authorize(['ong', 'admin']), upload.single('imagem'), async (req, res) => {
   try {
-    // Extrai os dados do corpo da requisição
     const { titulo, descricao, data, local, ongs, contato, cep } = req.body;
+    
+    // Opcional: Você pode querer associar o ID da ONG/Admin que criou o evento aqui.
+    // const criadoPorDonoId = req.user.id; 
     
     const eventoData = {
       titulo,
@@ -54,13 +58,12 @@ router.post('/', upload.single('imagem'), async (req, res) => {
       ongs: ongs || null,
       contato: contato || null,
       cep: cep || null,
-      imagem: req.file ? req.file.path.replace(/\\/g, '/') : null // Normaliza o caminho para usar barras normais
+      imagem: req.file ? req.file.path.replace(/\\/g, '/') : null
     };
 
     const evento = await Evento.create(eventoData);
     res.status(201).json(evento);
   } catch (err) {
-    // Remove o arquivo enviado se houve erro
     if (req.file) {
       const fs = require('fs');
       fs.unlink(req.file.path, () => {});
@@ -69,7 +72,7 @@ router.post('/', upload.single('imagem'), async (req, res) => {
   }
 });
 
-// GET evento por ID
+// GET evento por ID (rota pública)
 router.get('/:id', async (req, res) => {
   try {
     const evento = await Evento.findByPk(req.params.id);
@@ -82,15 +85,15 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// PUT atualizar evento
-router.put('/:id', upload.single('imagem'), async (req, res) => {
+// PUT atualizar evento - Protegido por auth e authorize
+// Apenas ONGs e Admins podem editar eventos
+router.put('/:id', auth, authorize(['ong', 'admin']), upload.single('imagem'), async (req, res) => {
   try {
     const evento = await Evento.findByPk(req.params.id);
     if (!evento) {
       return res.status(404).json({ error: 'Evento não encontrado' });
     }
 
-    // Atualiza os campos
     const { titulo, descricao, data, local, ongs, contato, cep } = req.body;
     
     const updateData = {
@@ -107,7 +110,6 @@ router.put('/:id', upload.single('imagem'), async (req, res) => {
     await evento.update(updateData);
     res.json(evento);
   } catch (err) {
-    // Remove o arquivo enviado se houve erro
     if (req.file) {
       const fs = require('fs');
       fs.unlink(req.file.path, () => {});
@@ -116,15 +118,16 @@ router.put('/:id', upload.single('imagem'), async (req, res) => {
   }
 });
 
-// DELETE excluir evento
-router.delete('/:id', async (req, res) => {
+// DELETE excluir evento - Protegido por auth e authorize
+// Apenas ONGs e Admins podem excluir eventos
+router.delete('/:id', auth, authorize(['ong', 'admin']), async (req, res) => {
+  console.log('Requisição DELETE recebida para ID:', req.params.id);
   try {
     const evento = await Evento.findByPk(req.params.id);
     if (!evento) {
       return res.status(404).json({ error: 'Evento não encontrado' });
     }
 
-    // Opcional: remover a imagem associada
     if (evento.imagem) {
       const fs = require('fs');
       fs.unlink(evento.imagem, () => {});
@@ -133,6 +136,7 @@ router.delete('/:id', async (req, res) => {
     await evento.destroy();
     res.json({ message: 'Evento excluído com sucesso' });
   } catch (err) {
+    console.error('Erro ao deletar evento:', err.message);
     res.status(500).json({ error: err.message });
   }
 });

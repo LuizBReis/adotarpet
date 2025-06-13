@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { SidebarService } from '../../services/sidebar.service';
 import { PetService } from '../../services/pet.service';
-import { AccesoService } from '../../services/acceso.service';
+import { AccesoService } from '../../services/acceso.service'; // Mantenha
+import { Router } from '@angular/router'; // Mantenha
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
@@ -26,7 +26,10 @@ import { Router } from '@angular/router';
 export class SidebarComponent implements OnInit {
   isSidebarVisible = true;
   isSubmenuOpen = false;
-  pets: any[] = []; // Lista de pets do usuário
+  pets: any[] = [];
+  // --- NOVO: Variável para o papel do usuário ---
+  userRole: string | null = null;
+  // -----------------------------------------------
 
   constructor(
     private sidebarService: SidebarService,
@@ -40,7 +43,13 @@ export class SidebarComponent implements OnInit {
       this.isSidebarVisible = isVisible;
     });
 
-    this.listarpets(); // Carrega a lista de pets ao iniciar o componente
+    this.listarpets();
+
+    // --- NOVO: Obter o papel do usuário logado ---
+    this.userRole = this.accesoService.getDonoRole();
+    // Você pode querer observar mudanças no role se o usuário puder mudar de role sem refresh
+    // Mas para login/logout, isso já é suficiente.
+    // ----------------------------------------------
   }
 
   toggleSidebar() {
@@ -51,6 +60,16 @@ export class SidebarComponent implements OnInit {
   toggleSubmenu() {
     this.isSubmenuOpen = !this.isSubmenuOpen;
   }
+
+  // --- NOVO: Métodos de verificação de papel ---
+  isOngOrAdmin(): boolean {
+    return this.accesoService.hasRole(['ong', 'admin']);
+  }
+
+  isAdmin(): boolean {
+    return this.accesoService.hasRole(['admin']);
+  }
+  // ----------------------------------------------
 
   cadastrarPet() {
     console.log('Cadastrando pet');
@@ -63,13 +82,18 @@ export class SidebarComponent implements OnInit {
   }
 
   cadastroEvento() {
-    console.log('Entrando em Eventos');
+    console.log('Cadastrando Evento'); // Ajustei o console.log
     this.router.navigate(['/cadastro-eventos']);
   }
 
-    editarEvento() {
-    console.log('Entrando em Eventos');
+  editarEvento() {
+    console.log('Editando Evento'); // Ajustei o console.log
     this.router.navigate(['/editar-evento']);
+  }
+
+  GerenciarUser() {
+    console.log('Editando Evento'); // Ajustei o console.log
+    this.router.navigate(['/gerenciar-usuarios']);
   }
 
   adotarPet() {
@@ -89,10 +113,10 @@ export class SidebarComponent implements OnInit {
   }
 
   listarpets() {
-    const donoId = this.accesoService.getDonoId(); // Obtém o ID do dono logado
+    const donoId = this.accesoService.getDonoId();
     if (donoId) {
       this.petService.getPetsByDono(donoId).subscribe((pets) => {
-        this.pets = pets; // Atribui os pets à variável
+        this.pets = pets;
         console.log('Lista de pets:', pets);
       });
     } else {
@@ -100,8 +124,7 @@ export class SidebarComponent implements OnInit {
     }
   }
 
-  // Método para editar o pet e redirecionar para a página de edição
   editarPet(petId: number) {
-    this.router.navigate(['/editar-pet', { id: petId }]); // Redireciona para a página de edição com o ID do pet
+    this.router.navigate(['/editar-pet', { id: petId }]);
   }
 }

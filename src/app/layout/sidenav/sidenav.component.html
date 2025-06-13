@@ -43,14 +43,12 @@
         <span class="menu-text">Eventos</span>
       </a>
     </li>
-    <li>
-      <a (click)="cadastroEvento()">
+    <li *ngIf="isOngOrAdmin()"> <a (click)="cadastroEvento()">
         <span class="menu-icon material-icons">add_circle</span>
         <span class="menu-text">Cadastrar Evento</span>
       </a>
     </li>
-        <li>
-      <a (click)="editarEvento()">
+    <li *ngIf="isOngOrAdmin()"> <a (click)="editarEvento()">
         <span class="menu-icon material-icons">edit</span>
         <span class="menu-text">Editar Evento</span>
       </a>
@@ -61,17 +59,21 @@
         <span class="menu-text">Configurações</span>
       </a>
     </li>
+    <li *ngIf="isAdmin()"> <a (click)="GerenciarUser()">
+        <span class="menu-icon material-icons">group</span>
+        <span class="menu-text">Gerenciar Usuários</span>
+      </a>
+    </li>
     <li>
       <a (click)="listarpets()">
         <span class="menu-icon material-icons">list</span>
         <span class="menu-text">Meus pets</span>
       </a>
     </li>
-    <!-- Exibe a lista de pets cadastrados -->
     <ul *ngIf="pets.length > 0" style="padding-left: 20px;">
       <li *ngFor="let pet of pets">
         <span class="menu-icon material-icons">pets</span>
-        <span (click)="editarPet(pet.id)" style="cursor: pointer;">  {{ pet.nome }} - {{ pet.raca }}</span>
+        <span (click)="editarPet(pet.id)" style="cursor: pointer;"> {{ pet.nome }} - {{ pet.raca }}</span>
       </li>
     </ul>
     <li>

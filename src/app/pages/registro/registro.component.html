@@ -2,18 +2,26 @@
   <div>
     <label for="nome">Nome:</label>
     <input id="nome" formControlName="nome" required>
+    <div *ngIf="registroForm.get('nome')?.invalid && registroForm.get('nome')?.touched" class="validation-error">
+      <small *ngIf="registroForm.get('nome')?.errors?.['required']">Nome é obrigatório.</small>
+    </div>
   </div>
 
   <div>
     <label for="email">Email:</label>
     <input id="email" formControlName="email" type="email" required>
+    <div *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched" class="validation-error">
+      <small *ngIf="registroForm.get('email')?.errors?.['required']">Email é obrigatório.</small>
+      <small *ngIf="registroForm.get('email')?.errors?.['email']">Formato de email inválido.</small>
+    </div>
   </div>
 
   <div>
     <label for="telefone">Telefone:</label>
     <input id="telefone" formControlName="telefone" type="text" required>
-    <div *ngIf="registroForm.get('telefone')?.invalid && registroForm.get('telefone')?.touched">
-      <small>Formato inválido. Exemplo: DDD + Número (11987654321).</small>
+    <div *ngIf="registroForm.get('telefone')?.invalid && registroForm.get('telefone')?.touched" class="validation-error">
+      <small *ngIf="registroForm.get('telefone')?.errors?.['required']">Telefone é obrigatório.</small>
+      <small *ngIf="registroForm.get('telefone')?.errors?.['pattern']">Formato inválido. Exemplo: 11987654321.</small>
     </div>
   </div>
 
@@ -45,7 +53,15 @@
   <div>
     <label for="senha">Senha:</label>
     <input id="senha" formControlName="senha" type="password" required>
+    <div *ngIf="registroForm.get('senha')?.invalid && registroForm.get('senha')?.touched" class="validation-error">
+      <small *ngIf="registroForm.get('senha')?.errors?.['required']">Senha é obrigatória.</small>
+      <small *ngIf="registroForm.get('senha')?.errors?.['minlength']">Mínimo 6 caracteres.</small>
+    </div>
   </div>
 
   <button type="submit" [disabled]="registroForm.invalid">Registrar</button>
+
+  <div *ngIf="errorMessage" class="error-message message-box">
+    <p>{{ errorMessage }}</p>
+  </div>
 </form>

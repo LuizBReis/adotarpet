@@ -37,7 +37,6 @@ const Dono = sequelize.define('Dono', {
   cep: DataTypes.STRING,
   latitude: DataTypes.DECIMAL(9, 6),
   longitude: DataTypes.DECIMAL(9, 6),
-  // NOVOS CAMPOS:
   passwordResetToken: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -46,6 +45,16 @@ const Dono = sequelize.define('Dono', {
     type: DataTypes.DATE,
     allowNull: true,
   },
+  // --- NOVO CAMPO: Papel do usuário ---
+  role: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'comum', // Valor padrão: 'comum'
+    validate: {
+      isIn: [['comum', 'ong', 'admin']], // Permite apenas esses valores
+    },
+  },
+  // -----------------------------------
 });
 
 Dono.beforeCreate(async (dono) => {
@@ -59,6 +68,8 @@ Dono.prototype.compareSenha = function (senha) {
 };
 
 Dono.prototype.generateToken = function () {
+  // O generateToken original não era usado no login, então vamos mantê-lo assim por enquanto.
+  // A lógica do JWT para o login será atualizada na authroute.
   return jwt.sign({ id: this.id, email: this.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 

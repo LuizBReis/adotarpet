@@ -9,12 +9,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.css'],
+  styleUrls: ['./registro.component.scss'],
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule]
 })
 export class RegistroComponent {
   registroForm: FormGroup;
+  errorMessage: string | null = null; // <--- Adicione esta variável
 
   constructor(
     private fb: FormBuilder,
@@ -26,7 +27,7 @@ export class RegistroComponent {
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       senha: ['', Validators.required],
-      telefone: ['', [Validators.required, Validators.pattern(/^\d{2}\d{4,5}\d{4}$/)]], // Validação para telefone
+      telefone: ['', [Validators.required, Validators.pattern(/^\d{2}\d{4,5}\d{4}$/)]],
       cep: [''],
       rua: [''],
       bairro: [''],
@@ -36,15 +37,23 @@ export class RegistroComponent {
   }
 
   register() {
+    this.errorMessage = null; // <--- Limpa qualquer erro anterior ao tentar registrar
+
     if (this.registroForm.valid) {
       this.accesoService.register(this.registroForm.value).subscribe(
         (res) => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/']); // Supondo que redireciona para a home ou login
         },
         (err) => {
+          // <--- Trata o erro e exibe a mensagem específica do backend
+          this.errorMessage = err.error.error || 'Ocorreu um erro no registro. Tente novamente.';
           console.error('Erro ao registrar', err);
         }
       );
+    } else {
+      // Se o formulário não for válido no frontend, mostra um erro genérico
+      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios e válidos.';
+      this.registroForm.markAllAsTouched(); // Para mostrar as validações dos campos
     }
   }
 
