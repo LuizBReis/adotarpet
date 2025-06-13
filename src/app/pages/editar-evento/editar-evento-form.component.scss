@@ -1,3 +1,5 @@
+/* ... seus estilos existentes ... */
+
 .form-container {
   padding: 2rem;
   max-width: 800px;
@@ -79,4 +81,121 @@
 
 .btn-salvar:hover:enabled {
   background: #1b5e20;
+}
+
+
+/* --- NOVOS ESTILOS PARA MÍDIAS --- */
+.current-media-container,
+.preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  border: 1px dashed #A5D7D2; /* Borda tracejada do tema */
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f8fcfc; /* Fundo levemente azulado */
+}
+
+.no-media-text {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.media-item {
+  position: relative;
+  width: 120px; /* Tamanho fixo para pré-visualização */
+  height: 120px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.media-preview-item { /* Para imagens e vídeos dentro de media-item */
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover; /* Garante que a mídia preencha o espaço */
+  display: block;
+}
+
+.remove-media-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(206, 95, 95, 0.8); /* Vermelho do tema */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.7em;
+  font-weight: bold;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #CE5F5F;
+  }
+}
+
+/* Estilos para o input de arquivo */
+.file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    border: 1px solid #A5D7D2;
+    border-radius: 8px;
+    background-color: #f0f8f8;
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #e6f2f2;
+    }
+}
+
+.file-upload-button {
+    background-color: #CE5F5F;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-right: 15px;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #b34a4a;
+    }
+}
+
+.file-upload-name {
+    flex-grow: 1;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+input[type="file"] {
+    display: none; /* Esconde o input padrão */
 }

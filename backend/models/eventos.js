@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // <--- Importa a instância do Sequelize
+const sequelize = require('../config/database');
 
 const Evento = sequelize.define('Evento', {
   titulo: {
@@ -12,7 +12,7 @@ const Evento = sequelize.define('Evento', {
   },
   contato: {
     type: DataTypes.STRING,
-    allowNull: true // Pode ser opcional
+    allowNull: true
   },
   data: {
     type: DataTypes.DATEONLY,
@@ -30,12 +30,15 @@ const Evento = sequelize.define('Evento', {
   ongs: {
     type: DataTypes.STRING
   },
-  imagem: {
-    type: DataTypes.STRING
+  // --- CAMPO ALTERADO: Continua 'imagem', mas agora é um ARRAY ---
+  imagens: { // Continua 'imagem', mas agora armazena um ARRAY de strings
+    type: DataTypes.JSONB, // Usando JSONB para armazenar um array de strings
+    allowNull: true,
   },
+  // -----------------------------------------------------------
   cep: {
       type: DataTypes.STRING(9),
-      allowNull: true 
+      allowNull: true
     }
 }, {
   tableName: 'eventos',

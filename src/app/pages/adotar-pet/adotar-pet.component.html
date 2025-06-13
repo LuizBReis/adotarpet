@@ -2,31 +2,41 @@
   <app-header></app-header>
   <app-sidenav></app-sidenav>
   <div class="content">
-      <div class="adotar-pet-container">
-  <h2 class="titulo-lista">🐾 Pets encontrados: {{ petsParaAdocao.length }}</h2>
-  <div *ngIf="petsParaAdocao.length > 0; else emptyList" class="pet-list">
-    <div *ngFor="let pet of petsParaAdocao" class="pet-card">
-      <div class="pet-image-container">
-        <button class="seta" *ngIf="pet.imagens && pet.imagens.length > 0 && pet.imagemAtual! > 0" (click)="anteriorImagem(pet)">◀</button>
-        <img *ngIf="pet.imagens && pet.imagens.length > 0 && pet.imagemAtual !== undefined" [src]="'http://localhost:3000/' + pet.imagens[pet.imagemAtual!]" alt="Imagem do Pet" />
-        <button class="seta" *ngIf="pet.imagens && pet.imagens.length > 0 && pet.imagemAtual! < pet.imagens.length - 1" (click)="proximaImagem(pet)">▶</button>
+    <div class="adotar-pet-container">
+      <h2 class="titulo-lista">🐾 Pets encontrados: {{ petsParaAdocao.length }}</h2>
+      <div *ngIf="petsParaAdocao.length > 0; else emptyList" class="pet-list">
+        <div *ngFor="let pet of petsParaAdocao" class="pet-card">
+          <div class="pet-image-container">
+            <button class="seta" *ngIf="pet.imagens && pet.imagens.length > 0 && pet.imagemAtual! > 0" (click)="anteriorImagem(pet)">◀</button>
+            
+            <ng-container *ngIf="pet.imagens && pet.imagens.length > 0 && pet.imagemAtual !== undefined">
+              <img *ngIf="isImage(pet.imagens[pet.imagemAtual!])"
+                   [src]="'http://localhost:3000/' + pet.imagens[pet.imagemAtual!]"
+                   alt="Mídia do Pet" />
+
+              <video *ngIf="isVideo(pet.imagens[pet.imagemAtual!])"
+                     [src]="'http://localhost:3000/' + pet.imagens[pet.imagemAtual!]"
+                     controls
+                     loop
+                     preload="metadata"
+                     class="pet-video">
+                Seu navegador não suporta a tag de vídeo.
+              </video>
+            </ng-container>
+            <button class="seta" *ngIf="pet.imagens && pet.imagens.length > 0 && pet.imagemAtual! < pet.imagens.length - 1" (click)="proximaImagem(pet)">▶</button>
+          </div>
+          <h3>{{ pet.nome }}</h3>
+          <p><strong>Idade:</strong> {{ pet.idade || 'x' }} anos</p>
+          <p><strong>Tipo:</strong> {{ pet.tipo || 'x' }}</p>
+          <p><strong>Raça:</strong> {{ pet.raca || 'x' }}</p>
+          <p><strong>Porte:</strong> {{ pet.porte || 'x' }}</p>
+          <p><strong>Castrado:</strong> {{ pet.castrado ? 'Sim' : 'Não' }}</p>
+          <button class="adotar-btn" (click)="abrirWhatsapp(pet)">Quero!</button>
+        </div>
       </div>
-      <h3>{{ pet.nome }}</h3>
-      <p><strong>Idade:</strong> {{ pet.idade || 'x' }} anos</p>
-      <p><strong>Tipo:</strong> {{ pet.tipo || 'x' }}</p>
-      <p><strong>Raça:</strong> {{ pet.raca || 'x' }}</p>
-      <p><strong>Porte:</strong> {{ pet.porte || 'x' }}</p>
-      <p><strong>Castrado:</strong> {{ pet.castrado ? 'Sim' : 'Não' }}</p>
-      <button class="adotar-btn" (click)="abrirWhatsapp(pet)">Quero!</button>
+      <ng-template #emptyList>
+        <p>Não há pets disponíveis para adoção no momento.</p>
+      </ng-template>
     </div>
   </div>
-  <ng-template #emptyList>
-    <p>Não há pets disponíveis para adoção no momento.</p>
-  </ng-template>
 </div>
-
-  </div>
-</div>
-
-
-

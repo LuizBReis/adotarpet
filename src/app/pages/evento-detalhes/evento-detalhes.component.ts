@@ -1,11 +1,29 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventoService, Evento } from '../../services/evento.service';
+// Importe a interface Evento se ela estiver no serviço (se não, defina-a aqui como abaixo)
+import { EventoService } from '../../services/evento.service';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../layout/header/header.component';
 import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 
-declare let L: any;
+declare let L: any; // Declaração para Leaflet
+
+// --- Interface Evento atualizada para o campo 'imagens' como ARRAY ---
+export interface Evento {
+  id?: number; // Pode ser undefined para eventos novos
+  titulo: string;
+  descricao: string;
+  contato?: string;
+  data: string; // Ou Date
+  hora_inicio?: string;
+  hora_fim?: string;
+  local?: string;
+  ongs?: string;
+  imagens?: string[]; // <--- AGORA É UM ARRAY DE STRINGS
+  cep?: string;
+  imagemAtual?: number; // <--- NOVO: Para controle do carrossel de mídias
+}
+// -------------------------------------------------------------------
 
 @Component({
   selector: 'app-evento-detalhes',
@@ -19,7 +37,7 @@ export class EventoDetalhesComponent implements OnInit, OnDestroy, AfterViewInit
   map: any = null;
   mapReady = false;
   private mapInitialized = false;
-  private coordinatesCache: { [key: string]: { lat: number; lon: number } } = {}; // Cache simples
+  private coordinatesCache: { [key: string]: { lat: number; lon: number } } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -71,12 +89,16 @@ export class EventoDetalhesComponent implements OnInit, OnDestroy, AfterViewInit
 
     this.eventoService.getEventoPorId(id).subscribe({
       next: (data: Evento) => {
-        this.evento = data;
-        if (data.local) {
-          this.fetchCoordinates(data.local, data.cep);
+        this.evento = {
+          ...data,
+          imagens: data.imagens || [], // Garante que 'imagens' é um array
+          imagemAtual: 0 // Inicializa o índice da mídia atual
+        };
+        
+        if (this.evento.local) {
+          this.fetchCoordinates(this.evento.local, this.evento.cep);
         } else {
-          // Fallback para Brasil se não houver local
-          this.initMap(-14.2350, -51.9253, 4);
+          this.initMap(-14.2350, -51.9253, 4); // Fallback para Brasil
         }
       },
       error: (err: any) => {
@@ -86,9 +108,41 @@ export class EventoDetalhesComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
 
+  // --- NOVOS MÉTODOS PARA VERIFICAR TIPO DE MÍDIA (Copiados) ---
+  isImage(url: string): boolean {
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.tiff', '.ico'];
+    const ext = this.getFileExtension(url);
+    return imageExtensions.includes(ext);
+  }
+
+  isVideo(url: string): boolean {
+    const videoExtensions = ['.mp4', '.webm', '.ogg', '.ogv', '.mov', '.avi', '.wmv', '.flv'];
+    const ext = this.getFileExtension(url);
+    return videoExtensions.includes(ext);
+  }
+
+  private getFileExtension(url: string): string {
+    const lastDotIndex = url.lastIndexOf('.');
+    return lastDotIndex !== -1 ? url.substring(lastDotIndex).toLowerCase() : '';
+  }
+  // ----------------------------------------------------------------------------------
+
+  // --- NOVOS MÉTODOS PARA NAVEGAÇÃO DE MÍDIA (Carrossel) ---
+  anteriorMidia(): void {
+    if (this.evento && this.evento.imagens && this.evento.imagemAtual !== undefined && this.evento.imagemAtual > 0) {
+      this.evento.imagemAtual--;
+    }
+  }
+
+  proximaMidia(): void {
+    if (this.evento && this.evento.imagens && this.evento.imagemAtual !== undefined && this.evento.imagemAtual < this.evento.imagens.length - 1) {
+      this.evento.imagemAtual++;
+    }
+  }
+  // ---------------------------------------------------------
+
   private async fetchCoordinates(endereco: string, cep?: string): Promise<void> {
     try {
-      // 1. Gera uma chave única para o cache
       const cacheKey = `${endereco}_${cep || ''}`.toLowerCase();
       if (this.coordinatesCache[cacheKey]) {
         console.log('Usando cache para:', cacheKey);
@@ -96,19 +150,14 @@ export class EventoDetalhesComponent implements OnInit, OnDestroy, AfterViewInit
         return;
       }
 
-      // 2. Padronização do endereço
       let enderecoFormatado = this.formatarEndereco(endereco, cep);
-
-      // 3. Tentativa com endereço completo
       let coordenadas = await this.buscarCoordenadasNominatim(enderecoFormatado);
 
-      // 4. Fallback: Tentar apenas com CEP se falhar
       if (!coordenadas && cep) {
         enderecoFormatado = `CEP ${cep}, Brasil`;
         coordenadas = await this.buscarCoordenadasNominatim(enderecoFormatado);
       }
 
-      // 5. Se encontrou coordenadas, armazena no cache e inicializa o mapa
       if (coordenadas) {
         this.coordinatesCache[cacheKey] = coordenadas;
         console.log('Localização encontrada:', {
@@ -119,47 +168,35 @@ export class EventoDetalhesComponent implements OnInit, OnDestroy, AfterViewInit
         this.initMap(coordenadas.lat, coordenadas.lon);
       } else {
         console.warn('Não foi possível encontrar a localização para:', endereco);
-        // Fallback para Brasil
         this.initMap(-14.2350, -51.9253, 4);
       }
     } catch (error) {
       console.error('Erro ao buscar coordenadas:', error);
-      // Fallback para mapa do Brasil
       this.initMap(-14.2350, -51.9253, 4);
     }
   }
 
   private formatarEndereco(endereco: string, cep?: string): string {
-    // Remove múltiplos espaços e normaliza
     endereco = endereco.replace(/\s+/g, ' ').trim().toLowerCase();
-    
-    // Adiciona CEP se existir
     if (cep) {
       endereco += `, ${cep}`;
     }
-    
-    // Garante que termine com Brasil
     if (!endereco.includes('brasil')) {
       endereco += ', brasil';
     }
-    
     return endereco;
   }
 
   private async buscarCoordenadasNominatim(query: string): Promise<{ lat: number; lon: number } | null> {
     try {
       const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=1&countrycodes=br`;
-      
       const response = await fetch(url, {
         headers: {
           'User-Agent': 'PETMATCH/1.0 (contato@petmatch.com.br)'
         }
       });
-
       if (!response.ok) throw new Error('Erro na requisição');
-
       const data = await response.json();
-      
       if (data.length > 0) {
         return {
           lat: parseFloat(data[0].lat),
@@ -207,8 +244,7 @@ export class EventoDetalhesComponent implements OnInit, OnDestroy, AfterViewInit
           `)
           .openPopup();
 
-        // Círculo de precisão
-        const radius = zoom === 15 ? 100 : 50000; // 100m ou 50km
+        const radius = zoom === 15 ? 100 : 50000;
         L.circle([lat, lon], {
           color: '#3388ff',
           fillColor: '#3388ff',

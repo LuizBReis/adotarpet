@@ -43,11 +43,33 @@
           <input type="text" formControlName="cep" />
         </div>
 
-        <div class="form-group">
-          <label>Imagem</label>
-          <input type="file" (change)="onFileChange($event)" />
+        <div class="form-group" *ngIf="evento">
+          <label>Mídias Existentes:</label>
+          <div class="current-media-container" *ngIf="evento.imagens && evento.imagens.length > 0">
+            <div *ngFor="let mediaUrl of evento.imagens; let i = index" class="media-item">
+              <img *ngIf="isImage(mediaUrl)" [src]="'http://localhost:3000/' + mediaUrl" alt="Mídia existente" class="media-preview-item">
+              <video *ngIf="isVideo(mediaUrl)" [src]="'http://localhost:3000/' + mediaUrl" controls loop preload="metadata" class="media-preview-item"></video>
+              <button type="button" class="remove-media-btn" (click)="removerMidiaExistente(mediaUrl)">Remover</button>
+            </div>
+          </div>
+          <p *ngIf="!evento.imagens || evento.imagens.length === 0" class="no-media-text">Nenhuma mídia existente.</p>
         </div>
-
+        <div class="form-group">
+          <label>Adicionar Novas Mídias (Imagens/Vídeos):</label>
+          <div class="file-upload">
+            <input type="file" id="nova-midia-upload" (change)="onFileSelected($event)" accept="image/*,video/*" multiple />
+            <label for="nova-midia-upload" class="file-upload-label">
+              <span class="file-upload-button">Escolher arquivos</span>
+              <span class="file-upload-name">{{ selectedFileNames || 'Nenhum arquivo selecionado' }}</span>
+            </label>
+          </div>
+          <div class="preview-container" *ngIf="mediaPreviews.length > 0">
+            <div *ngFor="let preview of mediaPreviews" class="media-preview-item">
+              <img *ngIf="preview.type === 'image'" [src]="preview.url" class="preview-media" alt="Prévia de Imagem">
+              <video *ngIf="preview.type === 'video'" [src]="preview.url" controls class="preview-media" alt="Prévia de Vídeo"></video>
+            </div>
+          </div>
+        </div>
         <div class="form-actions">
           <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
           <button type="submit" class="btn-salvar" [disabled]="eventoForm.invalid">Salvar</button>

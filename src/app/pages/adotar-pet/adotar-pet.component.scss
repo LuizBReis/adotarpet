@@ -132,3 +132,22 @@
     }
   }
   
+  /* ... seus estilos existentes ... */
+
+.pet-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px; /* Ou uma altura que você achar adequada */
+  overflow: hidden;
+  border-radius: 10px; /* Para bordas arredondadas */
+  margin-bottom: 15px; /* Espaço abaixo da imagem/vídeo */
+
+  img, .pet-video { /* Aplica os mesmos estilos para imagem e vídeo */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a imagem/vídeo cubra o container sem distorcer */
+    display: block; /* Remove espaço extra abaixo da imagem/vídeo */
+  }
+}
+
+/* ... seus outros estilos de pet-card, setas, etc. ... */

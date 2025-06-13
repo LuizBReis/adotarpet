@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // talvez necessário
-import { EventoService } from '../../services/evento.service';
+import { CommonModule } from '@angular/common';
+import { EventoService } from '../../services/evento.service'; // Certifique-se que EventoService existe
 import { HeaderComponent } from '../../layout/header/header.component';
 import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 
@@ -15,8 +15,9 @@ import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
 })
 export class CadastroEventoComponent {
   eventoForm: FormGroup;
-  selectedFile: File | null = null;
-  selectedFileName: string | null = null;
+  selectedFiles: File[] = []; // <--- Alterado para array de arquivos
+  selectedFileNames: string = 'Nenhum arquivo selecionado'; // <--- Para exibir nomes de arquivos
+  mediaPreviews: { url: string, type: 'image' | 'video' }[] = []; // <--- Para pré-visualizações
 
   constructor(
     private fb: FormBuilder,
@@ -29,56 +30,69 @@ export class CadastroEventoComponent {
       local: ['', Validators.required],
       descricao: ['', Validators.required],
       ongs: [''],
-      imagem: [''],
+      // 'imagem' não terá um FormControl para o File em si, será tratado manualmente no onSubmit
       contato: [''],
       cep: ['']
     });
   }
 
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      this.selectedFileName = file.name;
-      this.eventoForm.patchValue({ imagem: file });
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFiles = Array.from(input.files); // Converte FileList para Array
+      this.selectedFileNames = this.selectedFiles.map(file => file.name).join(', '); // Exibe todos os nomes
+
+      // Gera pré-visualizações
+      this.mediaPreviews = [];
+      this.selectedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const fileType = file.type.startsWith('image/') ? 'image' : 'video';
+          this.mediaPreviews.push({ url: reader.result as string, type: fileType });
+        };
+        reader.readAsDataURL(file);
+      });
+    } else {
+      this.selectedFiles = [];
+      this.selectedFileNames = 'Nenhum arquivo selecionado';
+      this.mediaPreviews = [];
     }
   }
 
-onSubmit(): void {
-  if (this.eventoForm.valid) {
-    const formData = new FormData();
-    
-    // Converta a data para o formato ISO se necessário
-    const rawData = this.eventoForm.getRawValue();
-    const eventoData = {
-      ...rawData,
-      data: new Date(rawData.data).toISOString() // Converte para formato ISO
-    };
+  onSubmit(): void {
+    if (this.eventoForm.valid) {
+      const formData = new FormData();
+      
+      const rawData = this.eventoForm.getRawValue();
+      const eventoData = {
+        ...rawData,
+        data: new Date(rawData.data).toISOString() // Converte para formato ISO
+      };
 
-    // Adiciona todos os campos do formulário ao FormData
-    Object.keys(eventoData).forEach(key => {
-      if (key !== 'imagem' && eventoData[key] !== null && eventoData[key] !== undefined) {
-        formData.append(key, eventoData[key]);
-      }
-    });
+      Object.keys(eventoData).forEach(key => {
+        // Não adiciona 'imagem' diretamente aqui, pois vamos adicionar os arquivos File
+        if (key !== 'imagem' && eventoData[key] !== null && eventoData[key] !== undefined) {
+          formData.append(key, eventoData[key]);
+        }
+      });
 
-    // Adiciona a imagem separadamente se existir
-    if (this.selectedFile) {
-      formData.append('imagem', this.selectedFile, this.selectedFile.name);
+      // Adiciona múltiplos arquivos ao FormData
+      this.selectedFiles.forEach(file => {
+        formData.append('imagem', file, file.name); // <--- O nome do campo é 'imagem'
+      });
+
+      this.eventoService.criarEvento(formData).subscribe({
+        next: (response) => {
+          console.log('Evento criado com sucesso:', response);
+          this.router.navigate(['/eventos']);
+        },
+        error: (error) => {
+          console.error('Erro ao criar evento:', error);
+          // Adicione aqui tratamento de erro para o usuário
+        }
+      });
     }
-
-    this.eventoService.criarEvento(formData).subscribe({
-      next: (response) => {
-        console.log('Evento criado com sucesso:', response);
-        this.router.navigate(['/eventos']);
-      },
-      error: (error) => {
-        console.error('Erro ao criar evento:', error);
-        // Adicione aqui tratamento de erro para o usuário
-      }
-    });
   }
-}
 
   onCancel(): void {
     this.router.navigate(['/eventos']);

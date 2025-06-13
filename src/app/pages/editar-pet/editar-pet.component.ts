@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from '../../layout/header/header.component';
 import { SidebarComponent } from '../../layout/sidenav/sidenav.component';
+import { MatCheckboxModule } from '@angular/material/checkbox'; // <--- Adicionado para mat-checkbox
 
 interface Pet {
   id: number;
@@ -18,8 +19,8 @@ interface Pet {
   porte: string;
   castrado: boolean;
   donoId: number;
-  paraAdocao: boolean;
-  imagens: string[];
+  paraAdocao: boolean; // Certifique-se que está na interface
+  imagens: string[]; // Mantém o nome 'imagens'
 }
 
 @Component({
@@ -27,7 +28,7 @@ interface Pet {
   templateUrl: './editar-pet.component.html',
   styleUrls: ['./editar-pet.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, FormsModule, HeaderComponent, SidebarComponent]
+  imports: [CommonModule, MatCardModule, MatButtonModule, FormsModule, HeaderComponent, SidebarComponent, MatCheckboxModule] // <--- Adicionado MatCheckboxModule
 })
 export class EditarPetComponent implements OnInit {
   pet: Pet = {
@@ -39,13 +40,13 @@ export class EditarPetComponent implements OnInit {
     porte: '',
     castrado: false,
     donoId: 0,
-    paraAdocao: false,
+    paraAdocao: false, // Inicialize paraAdocao
     imagens: []
   };
   isEditMode = false;
   petId: number | null = null;
-  novasImagens: File[] = []; // Declaração de novas imagens como um array de arquivos
-  imagensParaRemover: string[] = []; // Array para armazenar as imagens a serem removidas
+  novasMidias: File[] = []; // Renomeado de novasImagens para novasMidias
+  // imagensParaRemover: string[] = []; // Esta variável não é mais necessária, a remoção é direta
 
   constructor(
     private petService: PetService,
@@ -79,6 +80,12 @@ export class EditarPetComponent implements OnInit {
 
   toggleEditMode() {
     this.isEditMode = !this.isEditMode;
+    // Limpa novas mídias e o array de remoção ao cancelar a edição
+    if (!this.isEditMode) {
+        this.novasMidias = [];
+        // Se a remoção de imagem for no frontend antes de salvar, você precisará recarregar o pet.
+        this.loadPetData(); // Recarrega os dados originais se cancelar
+    }
   }
 
   saveChanges() {
@@ -90,41 +97,31 @@ export class EditarPetComponent implements OnInit {
       formData.append('raca', this.pet.raca);
       formData.append('porte', this.pet.porte);
       formData.append('castrado', String(this.pet.castrado));
-      formData.append('paraAdocao', String(this.pet.paraAdocao));
-  
-      // Adicionar as imagens existentes no pet (caso haja), mas sem as imagens removidas
-      const imagensParaEnviar = this.pet.imagens.filter(image => !this.imagensParaRemover.includes(image));
-      for (let i = 0; i < imagensParaEnviar.length; i++) {
-        formData.append('imagens', imagensParaEnviar[i]);
+      formData.append('paraAdocao', String(this.pet.paraAdocao)); // Adicionado paraAdoção
+
+      // Adicionar as NOVAS mídias ao FormData
+      for (let i = 0; i < this.novasMidias.length; i++) {
+        formData.append('imagens', this.novasMidias[i]); // O nome do campo é 'imagens' no backend
       }
-  
-      // Adicionar as novas imagens ao array
-      for (let i = 0; i < this.novasImagens.length; i++) {
-        formData.append('imagens', this.novasImagens[i]);
-      }
-  
-      // Adicionar as imagens a serem removidas
-      for (let i = 0; i < this.imagensParaRemover.length; i++) {
-        formData.append('removerImagens', this.imagensParaRemover[i]);
-      }
-  
-      // Enviar o FormData com todas as imagens (existentes e novas)
-      this.petService.updatePet(this.petId, formData).subscribe(
+      
+      // As mídias existentes que NÃO foram removidas já estão no pet.imagens
+      // e o backend as preserva ao atualizar, a menos que sejam explicitamente substituídas.
+      // A lógica de remoção agora é feita por uma requisição PUT separada.
+
+      this.petService.updatePet(this.petId, formData).subscribe( // updatePet precisa aceitar FormData
         (response) => {
-          console.log('Dados do pet atualizados com sucesso!');
+          console.log('Dados do pet atualizados com sucesso!', response);
           alert('Dados do pet atualizados com sucesso!');
-          this.router.navigate(['/inicio']);
+          this.isEditMode = false; // Sai do modo de edição
+          this.novasMidias = []; // Limpa array de novas mídias
+          this.loadPetData(); // Recarrega os dados do pet para mostrar as mídias atualizadas
         },
         (error) => {
           console.error('Erro ao atualizar dados do pet:', error);
+          alert('Erro ao atualizar dados do pet!');
         }
       );
     }
-  }
-
-  cancelEdit() {
-    this.toggleEditMode();
-    this.loadPetData();
   }
 
   deletePet() {
@@ -147,23 +144,46 @@ export class EditarPetComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      this.novasImagens = Array.from(input.files); // Armazena os arquivos selecionados
+      this.novasMidias = Array.from(input.files); // Armazena os arquivos selecionados
     }
   }
 
-// Método para remover uma imagem do pet
-removerImagem(imagemUrl: string) {
-  if (this.petId !== null) {
-  this.petService.removerImagem(this.petId, imagemUrl).subscribe(
-    (petAtualizado) => {
-      this.pet = petAtualizado; // Atualiza o pet com os dados mais recentes, incluindo a lista de imagens
-      console.log('Imagem removida com sucesso', petAtualizado);
-    },
-    (erro) => {
-      console.error('Erro ao remover a imagem:', erro);
+  // Método para remover uma mídia (imagem ou vídeo) do pet
+  removerMidia(mediaUrl: string) { // Renomeado para removerMidia
+    if (this.petId !== null) {
+      const confirmRemove = confirm('Tem certeza de que deseja remover esta mídia?');
+      if (confirmRemove) {
+        // Chama o serviço para remover a mídia específica
+        this.petService.removerImagem(this.petId, mediaUrl).subscribe( // O nome do serviço é removerImagem
+          (petAtualizado) => {
+            this.pet.imagens = petAtualizado.imagens; // Atualiza o array de imagens diretamente
+            console.log('Mídia removida com sucesso', petAtualizado);
+          },
+          (erro) => {
+            console.error('Erro ao remover a mídia:', erro);
+            alert('Erro ao remover a mídia!');
+          }
+        );
+      }
     }
-  );
-}
-}
-  
+  }
+
+  // --- NOVOS MÉTODOS PARA VERIFICAR TIPO DE MÍDIA ---
+  isImage(url: string): boolean {
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.tiff', '.ico'];
+    const ext = this.getFileExtension(url);
+    return imageExtensions.includes(ext);
+  }
+
+  isVideo(url: string): boolean {
+    const videoExtensions = ['.mp4', '.webm', '.ogg', '.ogv', '.mov', '.avi', '.wmv', '.flv'];
+    const ext = this.getFileExtension(url);
+    return videoExtensions.includes(ext);
+  }
+
+  private getFileExtension(url: string): string {
+    const lastDotIndex = url.lastIndexOf('.');
+    return lastDotIndex !== -1 ? url.substring(lastDotIndex).toLowerCase() : '';
+  }
+  // ---------------------------------------------------
 }

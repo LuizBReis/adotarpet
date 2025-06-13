@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Evento {
+  imagens: never[];
   horaInicio: string;
   horaFim: string;
   id?: number;
@@ -55,5 +56,10 @@ export class EventoService {
   // Obtém um evento por ID (string)
   getEventoPorId(id: string): Observable<Evento> {
     return this.http.get<Evento>(`${this.apiUrl}/${id}`);
+  }
+
+  removerImagemEvento(eventoId: number, imagemUrl: string): Observable<Evento> {
+    // Esta rota espera a imagemUrl no corpo da requisição PUT
+    return this.http.put<Evento>(`${this.apiUrl}/${eventoId}/remover-imagem`, { imagemUrl });
   }
 }

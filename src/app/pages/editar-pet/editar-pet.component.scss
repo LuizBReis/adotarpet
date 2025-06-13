@@ -148,3 +148,85 @@ button.mat-raised-button[color="accent"] {
     background-color: #138496;
   }
 }
+
+/* ... seus estilos existentes ... */
+
+
+
+.media-item { /* Um container para cada imagem/vídeo individual e seu botão de remover */
+  position: relative;
+  margin-bottom: 15px; /* Espaçamento entre as mídias */
+  border: 1px solid #eee; /* Borda sutil */
+  border-radius: 8px; /* Bordas arredondadas */
+  overflow: hidden; /* Para garantir que o border-radius funcione */
+  padding: 5px; /* Pequeno padding interno */
+  background-color: #f9f9f9;
+}
+
+.pet-image img, .pet-video { /* Aplica estilos tanto para img quanto para video */
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 5px; /* Bordas arredondadas para a mídia dentro do item */
+}
+
+.pet-video {
+  width: 100%; /* Vídeo ocupa a largura total do container */
+  max-height: 250px; /* Limita a altura do vídeo */
+  object-fit: contain; /* Garante que o vídeo seja totalmente visível dentro da caixa */
+  background-color: black; /* Fundo preto para o vídeo */
+}
+
+.remove-media-btn { /* Botão para remover mídia */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(206, 95, 95, 0.8); /* Cor do seu tema, semi-transparente */
+  color: white;
+  border: none;
+  border-radius: 50%; /* Botão circular */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: bold;
+  opacity: 0.9;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  z-index: 10; /* Garante que o botão fique acima da mídia */
+
+  &:hover {
+    opacity: 1;
+    background-color: #CE5F5F;
+  }
+}
+
+.add-media-input { /* Estilo para o input de adicionar mídia */
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px dashed #A5D7D2; /* Borda tracejada com cor do tema */
+    border-radius: 10px;
+    text-align: center;
+    background-color: #f0f8f8; /* Fundo suave */
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #555;
+    }
+    input[type="file"] {
+        display: block; /* Garante que o input ocupa sua própria linha */
+        margin: auto;
+        border: none;
+        padding: 0;
+        background: none;
+        color: #CE5F5F;
+        cursor: pointer;
+        width: auto; /* Permite que o input se ajuste ao conteúdo */
+    }
+}
+
+/* ... seus outros estilos ... */

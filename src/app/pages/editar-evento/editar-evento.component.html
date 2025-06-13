@@ -7,25 +7,25 @@
       <h1>Gerenciar Eventos</h1>
 
       <div *ngIf="eventos.length > 0; else semEventos" class="eventos-grid">
-        <div *ngFor="let evento of eventos" class="evento-card">
-          <div class="card-header">
-            <h3>{{ evento.titulo }}</h3>
-            <div class="acoes">
-              <button class="btn-icon btn-editar" (click)="editarEvento(evento.id!)" aria-label="Editar">
-                <span class="material-icons">edit</span>
-              </button>
-              <button class="btn-icon btn-excluir" (click)="excluirEvento(evento.id!)" aria-label="Excluir">
-                <span class="material-icons">delete</span>
-              </button>
-            </div>
-          </div>
-          <p>{{ evento.descricao }}</p>
-          <div class="info">
-            <span><strong>Data:</strong> {{ evento.data | date: 'dd/MM/yyyy' }}</span>
-            <span><strong>Local:</strong> {{ evento.local }}</span>
-          </div>
-        </div>
+  <div *ngFor="let evento of eventos" class="evento-card">
+    <div class="card-header">
+      <h3>{{ evento.titulo }}</h3>
+      <div class="acoes">
+        <button class="btn-icon btn-editar" (click)="editarEvento(evento.id!)" aria-label="Editar">
+          <span class="material-icons">edit</span>
+        </button>
+        <button class="btn-icon btn-excluir" (click)="excluirEvento(evento.id!)" aria-label="Excluir">
+          <span class="material-icons">delete</span>
+        </button>
       </div>
+    </div>
+    <p>{{ evento.descricao }}</p>
+    <div class="info">
+      <span><strong>Data:</strong> {{ evento.data | date: 'dd/MM/yyyy' }}</span>
+      <span><strong>Local:</strong> {{ evento.local }}</span>
+    </div>
+  </div>
+</div>
 
       <ng-template #semEventos>
         <p>Nenhum evento cadastrado.</p>

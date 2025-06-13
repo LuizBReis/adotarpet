@@ -187,3 +187,194 @@
     z-index: 0; // Corrige problemas de sobreposição
   }
 }
+
+/* ... seus estilos existentes ... */
+
+.detalhes-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+
+  .voltar-btn {
+    background-color: transparent;
+    border: none;
+    color: #4a90e2;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    text-decoration: underline;
+  }
+
+  .titulo-evento {
+    font-size: 2.2rem;
+    color: #CE5F5F;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .detalhes-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+  }
+
+  .imagem-container { /* Renomeado e ajustado para ser um carrossel de mídia */
+    flex: 1;
+    min-width: 300px;
+    position: relative; /* Para posicionar as setas */
+    width: 100%;
+    height: 400px; /* Altura fixa para o container de mídia */
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0; /* Fundo para placeholder/carregamento */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .imagem-evento, .video-evento { /* Estilos para imagem E vídeo */
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Mídia cobre o container */
+      display: block;
+      border-radius: 12px; /* Mantém bordas arredondadas */
+    }
+
+    .video-evento {
+      background-color: black; /* Fundo preto para o player de vídeo */
+    }
+
+    .imagem-placeholder {
+      width: 100%;
+      height: 100%; /* Ajustado para a altura do container */
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #999;
+      border-radius: 12px;
+      border: 1px dashed #ccc;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .seta { /* Botões de navegação de mídia (carrossel) */
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px; /* Um pouco maiores */
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 1.5em; /* Seta maior */
+      z-index: 10;
+
+      &:first-of-type { left: 15px; } /* Mais afastado da borda */
+      &:last-of-type { right: 15px; }
+
+      &:hover { background-color: rgba(0, 0, 0, 0.7); }
+    }
+  }
+
+  .info-container {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    h2 {
+      font-size: 1.5rem;
+      color: #CE5F5F;
+      margin-bottom: 0.5rem;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 0.5rem;
+    }
+
+    .endereco-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #f9f9f9;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+
+      .pin-icon {
+        font-size: 1.2rem;
+      }
+
+      .endereco {
+        margin: 0;
+        font-size: 1rem;
+      }
+    }
+
+    .descricao {
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .ongs-lista {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+
+    .contato-container {
+      p {
+        margin: 0.5rem 0;
+      }
+
+      .site a {
+        color: #4a90e2;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.map-container { /* Mantém os estilos do mapa, mas o z-index deve ser crucial */
+  height: 300px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+  border: 1px solid #eee;
+  background-color: #f5f5f5;
+
+  /* IMPORTANTE: Assegura que o mapa não esteja por cima de outros elementos Leaflet */
+  &.leaflet-container {
+    z-index: 0; // Corrige problemas de sobreposição
+  }
+}
+
+#map { /* O ID do div do mapa */
+  height: 100%; /* Ocupa a altura total do map-container */
+  width: 100%; /* Ocupa a largura total do map-container */
+}

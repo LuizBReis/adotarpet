@@ -3,90 +3,92 @@
   <app-sidenav></app-sidenav>
   <div class="content">
     <mat-card class="pet-card custom-card">
-  <mat-card-header>
-    <div class="pet-header">
-      <h1 class="pet-title">Editar Pet</h1>
-    </div>
-  </mat-card-header>
+      <mat-card-header>
+        <div class="pet-header">
+          <h1 class="pet-title">Editar Pet</h1>
+        </div>
+      </mat-card-header>
 
-  <mat-card-content>
-    <div class="pet-content">
-      <div class="pet-image">
-        <!-- Exibir imagens do pet -->
-        <div *ngIf="pet.imagens && pet.imagens.length > 0">
-          <div *ngFor="let image of pet.imagens; let i = index">
-            <img [src]="'http://localhost:3000/' + image" alt="Imagem do Pet" />
-            <button *ngIf="isEditMode" (click)="removerImagem(image)">Remover</button>
+      <mat-card-content>
+        <div class="pet-content">
+          <div class="pet-image">
+            <div *ngIf="pet.imagens && pet.imagens.length > 0">
+              <div *ngFor="let mediaUrl of pet.imagens; let i = index" class="media-item">
+                <img *ngIf="isImage(mediaUrl)"
+                     [src]="'http://localhost:3000/' + mediaUrl"
+                     alt="Mídia do Pet" />
+
+                <video *ngIf="isVideo(mediaUrl)"
+                       [src]="'http://localhost:3000/' + mediaUrl"
+                       controls
+                       loop
+                       preload="metadata"
+                       class="pet-video">
+                  Seu navegador não suporta a tag de vídeo.
+                </video>
+                <button *ngIf="isEditMode" (click)="removerMidia(mediaUrl)" class="remove-media-btn">Remover</button> </div>
+            </div>
+
+            <div *ngIf="isEditMode" class="add-media-input">
+              <label for="media-upload">Adicionar Imagens/Vídeos:</label>
+              <input type="file" id="media-upload" (change)="onFileSelected($event)" multiple accept="image/*,video/*" /> </div>
+          </div>
+
+          <div class="pet-details">
+            <ng-container *ngIf="isEditMode; else displayMode">
+              <p>
+                Nome: <input [(ngModel)]="pet.nome" placeholder="Nome do Pet" />
+              </p>
+              <p>
+                Idade: <input [(ngModel)]="pet.idade" type="number" placeholder="Idade" />
+              </p>
+              <p>
+                Tipo: <input [(ngModel)]="pet.tipo" placeholder="Tipo do Pet" />
+              </p>
+              <p>
+                Raça: <input [(ngModel)]="pet.raca" placeholder="Raça do Pet" />
+              </p>
+              <p>
+                Porte: <input [(ngModel)]="pet.porte" placeholder="Porte" />
+              </p>
+              <p>
+                Castrado:
+                <mat-checkbox [(ngModel)]="pet.castrado">Sim</mat-checkbox>
+              </p>
+              <p>
+                Para Adoção:
+                <mat-checkbox [(ngModel)]="pet.paraAdocao">Disponível</mat-checkbox> </p>
+            </ng-container>
+
+            <ng-template #displayMode>
+              <p>Nome: {{ pet.nome }}</p>
+              <p>Idade: {{ pet.idade }} anos</p>
+              <p>Tipo: {{ pet.tipo }}</p>
+              <p>Raça: {{ pet.raca }}</p>
+              <p>Porte: {{ pet.porte }}</p>
+              <p>Castrado: {{ pet.castrado ? 'Sim' : 'Não' }}</p>
+              <p>Para Adoção: {{ pet.paraAdocao ? 'Sim' : 'Não' }}</p> </ng-template>
+
+            <button mat-raised-button color="accent" (click)="toggleEditMode()">
+              {{ isEditMode ? 'Cancelar' : 'Editar' }}
+            </button>
           </div>
         </div>
+      </mat-card-content>
 
-        <!-- Exibir o input para adicionar imagens apenas no modo de edição -->
-        <div *ngIf="isEditMode">
-          <input type="file" (change)="onFileSelected($event)" multiple />
-        </div>
-      </div>
-
-      <div class="pet-details">
-        <ng-container *ngIf="isEditMode; else displayMode">
-          <!-- Campos editáveis -->
-          <p>
-            Nome: <input [(ngModel)]="pet.nome" placeholder="Nome do Pet" />
-          </p>
-          <p>
-            Idade: <input [(ngModel)]="pet.idade" type="number" placeholder="Idade" />
-          </p>
-          <p>
-            Tipo: <input [(ngModel)]="pet.tipo" placeholder="Tipo do Pet" />
-          </p>
-          <p>
-            Raça: <input [(ngModel)]="pet.raca" placeholder="Raça do Pet" />
-          </p>
-          <p>
-            Porte: <input [(ngModel)]="pet.porte" placeholder="Porte" />
-          </p>
-          <p>
-            Castrado:
-            <mat-checkbox [(ngModel)]="pet.castrado">Sim</mat-checkbox>
-          </p>
+      <mat-card-actions>
+        <ng-container *ngIf="isEditMode">
+          <button mat-raised-button color="primary" (click)="saveChanges()">Salvar</button>
         </ng-container>
 
-        <ng-template #displayMode>
-          <!-- Campos de exibição -->
-          <p>Nome: {{ pet.nome }}</p>
-          <p>Idade: {{ pet.idade }} anos</p>
-          <p>Tipo: {{ pet.tipo }}</p>
-          <p>Raça: {{ pet.raca }}</p>
-          <p>Porte: {{ pet.porte }}</p>
-          <p>Castrado: {{ pet.castrado ? 'Sim' : 'Não' }}</p>
-        </ng-template>
+        <div class="icon-button">
+          <a (click)="deletePet()" routerLinkActive="active">
+            <span class="menu-icon material-icons">delete</span>
+          </a>
+        </div>
 
-        <button mat-raised-button color="accent" (click)="toggleEditMode()">
-          {{ isEditMode ? 'Cancelar' : 'Editar' }}
-        </button>
-      </div>
-    </div>
-  </mat-card-content>
-
-  <mat-card-actions>
-    <ng-container *ngIf="isEditMode">
-      <button mat-raised-button color="primary" (click)="saveChanges()">Salvar</button>
-    </ng-container>
-
-    <div class="icon-button">
-      <a (click)="deletePet()" routerLinkActive="active">
-        <span class="menu-icon material-icons">delete</span>
-      </a>
-    </div>
-
-    <button mat-raised-button color="primary" (click)="router.navigate(['/inicio'])">Voltar</button>
-  </mat-card-actions>
-</mat-card>
+        <button mat-raised-button color="primary" (click)="router.navigate(['/inicio'])">Voltar</button>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </div>
-
-
-
-
-
-
-

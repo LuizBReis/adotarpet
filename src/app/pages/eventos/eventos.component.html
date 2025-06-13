@@ -4,22 +4,42 @@
 
   <div class="content">
     <div class="eventos-container">
+      <h2 class="titulo-lista">🎉 Eventos Encontrados: {{ eventos.length }}</h2>
       <div *ngIf="eventos.length > 0; else emptyList" class="eventos-list">
         <div *ngFor="let evento of eventos" class="evento-card">
-          <div class="evento-imagem">
-            <img *ngIf="evento.imagem" [src]="'http://localhost:3000/' + evento.imagem" alt="Imagem do Evento" />
-            <div *ngIf="!evento.imagem" class="imagem-placeholder">
-              <span>Sem imagem</span>
+          <div class="evento-imagem-container">
+            <button class="seta" *ngIf="evento.imagens && evento.imagens.length > 0 && evento.imagemAtual! > 0" (click)="anteriorMidia(evento)">◀</button>
+            
+            <ng-container *ngIf="evento.imagens && evento.imagens.length > 0 && evento.imagemAtual !== undefined">
+              <img *ngIf="isImage(evento.imagens[evento.imagemAtual!])"
+                   [src]="'http://localhost:3000/' + evento.imagens[evento.imagemAtual!]"
+                   alt="Mídia do Evento" />
+
+              <video *ngIf="isVideo(evento.imagens[evento.imagemAtual!])"
+                     [src]="'http://localhost:3000/' + evento.imagens[evento.imagemAtual!]"
+                     controls
+                     loop
+                     preload="metadata"
+                     class="evento-video">
+                Seu navegador não suporta a tag de vídeo.
+              </video>
+            </ng-container>
+            
+            <div *ngIf="!evento.imagens || evento.imagens.length === 0" class="imagem-placeholder">
+              <span>Sem mídia</span>
             </div>
+
+            <button class="seta" *ngIf="evento.imagens && evento.imagens.length > 0 && evento.imagemAtual! < evento.imagens.length - 1" (click)="proximaMidia(evento)">▶</button>
           </div>
+          
           <div class="evento-info">
             <h3>{{ evento.titulo }}</h3>
             <p class="evento-descricao">{{ evento.descricao }}</p>
 
             <div class="evento-detalhes">
               <p><strong>Data:</strong> {{ evento.data }}</p>
-              <p *ngIf="evento.horaInicio && evento.horaFim">
-                <strong>Horário:</strong> {{ evento.horaInicio }} às {{ evento.horaFim }}
+              <p *ngIf="evento.hora_inicio && evento.hora_fim">
+                <strong>Horário:</strong> {{ evento.hora_inicio }} às {{ evento.hora_fim }}
               </p>
               <p *ngIf="evento.local"><strong>Local:</strong> {{ evento.local }}</p>
             </div>
